@@ -1,5 +1,7 @@
 package com.contractor.filter;
 
+import com.contractor.model.entity.user.User;
+import com.contractor.model.enums.UserRights;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.EnumUtils;
 
@@ -28,67 +30,59 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-//        // Get the resource class which matches with the requested URL
-//        // Extract the rights declared by it
-//        Class<?> resourceClass = resourceInfo.getResourceClass();
-//        List<UserRights> classRights = extractRights(resourceClass);
+        // Get the resource class which matches with the requested URL
+        // Extract the rights declared by it
+        Class<?> resourceClass = resourceInfo.getResourceClass();
+        List<UserRights> classRights = extractRights(resourceClass);
 //
 //        // Get the resource method which matches with the requested URL
 //        // Extract the rights declared by it
-//        Method resourceMethod = resourceInfo.getResourceMethod();
-//        List<UserRights> methodRights = extractRights(resourceMethod);
+        Method resourceMethod = resourceInfo.getResourceMethod();
+        List<UserRights> methodRights = extractRights(resourceMethod);
 //
-//        try {
-//            User user = User.fetchUserById(requestContext.getSecurityContext().getUserPrincipal().getName());
-//
-//            if (null == user && TokenType.hal.name().equals(requestContext.getSecurityContext().getAuthenticationScheme())) {
-//                user = User.fetchByHalCustomerNumber(requestContext.getSecurityContext().getUserPrincipal().getName());
-//
-//                //This ensures that all users that can log in to hal can login to our system as well
-//                //via our new authentication rules (accessing allowed entry points with HAL token),
-//                //even if they our not yet imported to our db.
-//                if (null == user) {
-//                    user = new User(new String[]{UserRoles.user.name()});
-//                }
-//            }
-//
-//            if (null == user) {
-//                throw new SecurityException("Could not find user");
-//            }
-//
-//            // Check if the user is allowed to execute the method
-//            // The method annotations override the class annotations
-//            checkPermissions((!methodRights.isEmpty()) ? methodRights : classRights, user);
-//
-//        } catch (SecurityException e) {
-//            requestContext.abortWith(
-//                    Response.status(Response.Status.UNAUTHORIZED).build());
-//        }
+        try {
+            // User.fetchUserById(requestContext.getSecurityContext().getUserPrincipal().getName());
+            //TODO implement above use case when db ready
+            User user = null;
+
+            if (null == user) {
+                throw new SecurityException("Could not find user");
+            }
+
+            // Check if the user is allowed to execute the method
+            // The method annotations override the class annotations
+            checkPermissions((!methodRights.isEmpty()) ? methodRights : classRights, user);
+
+        } catch (SecurityException e) {
+            requestContext.abortWith(
+                    Response.status(Response.Status.UNAUTHORIZED).build());
+        }
     }
 
     // Extract rights from the annotated element
-//    private List<UserRights> extractRights(AnnotatedElement annotatedElement) {
-//        if (annotatedElement == null) {
-//            return new ArrayList<>();
-//        } else {
-//            Secured secured = annotatedElement.getAnnotation(Secured.class);
-//            if (secured == null) {
-//                return new ArrayList<>();
-//            } else {
-//                UserRights[] allowedRights = secured.value();
-//                return Arrays.asList(allowedRights);
-//            }
-//        }
-//    }
+    private List<UserRights> extractRights(AnnotatedElement annotatedElement) {
+        if (annotatedElement == null) {
+            return new ArrayList<>();
+        } else {
+            Secured secured = annotatedElement.getAnnotation(Secured.class);
+            if (secured == null) {
+                return new ArrayList<>();
+            } else {
+                UserRights[] allowedRights = secured.value();
+                return Arrays.asList(allowedRights);
+            }
+        }
+    }
 
-//    private void checkPermissions(List<UserRights> allowedRights, @NotNull User user) throws SecurityException {
-//        // Check if the user contains one of the allowed rights
-//        // Throw an Exception if the user has not permission to execute the method
-//        boolean hasRight = false;
-//
-//        Set<UserRights> userRights = new HashSet<>();
-//
-//        //fetch list of user rights by user roles
+    private void checkPermissions(List<UserRights> allowedRights, @NotNull User user) throws SecurityException {
+        // Check if the user contains one of the allowed rights
+        // Throw an Exception if the user has not permission to execute the method
+        boolean hasRight = false;
+
+        Set<UserRights> userRights = new HashSet<>();
+
+        //TODO uncomment when db ready
+        //fetch list of user rights by user roles
 //        if (!ArrayUtils.isEmpty(user.getRoles())) {
 //            for (String userRole : user.getRoles()) {
 //                if (EnumUtils.isValidEnum(UserRoles.class, userRole)) {
@@ -105,16 +99,16 @@ public class AuthorizationFilter implements ContainerRequestFilter {
 //                }
 //            }
 //        }
-//
-//        //match user rights with required method rights
-//        for (UserRights allowedRight : allowedRights) {
-//            if (userRights.contains(allowedRight)) {
-//                hasRight = true;
-//            }
-//        }
-//
-//        if (!hasRight) {
-//            throw new SecurityException("User does not have required access rights");
-//        }
-//    }
+
+        //match user rights with required method rights
+        for (UserRights allowedRight : allowedRights) {
+            if (userRights.contains(allowedRight)) {
+                hasRight = true;
+            }
+        }
+
+        if (!hasRight) {
+            throw new SecurityException("User does not have required access rights");
+        }
+    }
 }

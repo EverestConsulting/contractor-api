@@ -1,5 +1,6 @@
 package com.contractor.filter;
 
+import com.contractor.model.entity.TokenSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,68 +29,64 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
         // Get the HTTP Authorization header from the request
-//        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-//
-//        String path = requestContext.getUriInfo().getPath();
-//
-//        TokenSession tokenSessionLocalhost = null;
-//
-//        if (path.endsWith("/admin-console") && null != requestContext.getHeaderString("Host") && requestContext.getHeaderString("Host").startsWith("localhost")) {
-//            // Let localhost user through to the admin console!
-//            tokenSessionLocalhost = User.matchUser(new TechnicalLoginRequest("bnd_v1_bnd_localhost", "nopassword"), true);
-//        } else if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-//            // HTTP Authorization header is not present or formatted correctly
-//            LOG.warn("Unauthorised access, missing valid Authorization header!");
-//            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
-//            return;
-//        }
-//
-//        // Extract the token from the HTTP Authorization header
-//        String token = null != authorizationHeader ? authorizationHeader.substring("Bearer".length()).trim() : null;
-//
-//        try {
-//
-//            // Validate the token
-//            final TokenSession tokenSession = null != tokenSessionLocalhost ? tokenSessionLocalhost : TokenSession.findByToken(token);
-//
-//            if (null == tokenSession) {
-//                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
-//                return;
-//            }
-//
-//            requestContext.setSecurityContext(new SecurityContext() {
-//
-//                @Override
-//                public Principal getUserPrincipal() {
-//
-//                    return new Principal() {
-//
-//                        @Override
-//                        public String getName() {
+        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            // HTTP Authorization header is not present or formatted correctly
+            LOG.warn("Unauthorised access, missing valid Authorization header!");
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+            return;
+        }
+
+        // Extract the token from the HTTP Authorization header
+        String token = authorizationHeader.substring("Bearer".length()).trim();
+
+        try {
+
+            // Validate the token
+            //TODO Implement TokenSession.findByToken(token);
+            final TokenSession tokenSession = null;
+
+            if (null == tokenSession) {
+                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+                return;
+            }
+
+            requestContext.setSecurityContext(new SecurityContext() {
+
+                @Override
+                public Principal getUserPrincipal() {
+
+                    return new Principal() {
+
+                        @Override
+                        public String getName() {
+                            //TODO uncomment when token session table ready
 //                            return tokenSession.getUserId();
-//                        }
-//                    };
-//                }
-//
-//                @Override
-//                public boolean isUserInRole(String role) {
-//                    return true;
-//                }
-//
-//                @Override
-//                public boolean isSecure() {
-//                    return false;
-//                }
-//
-//                @Override
-//                public String getAuthenticationScheme() {
-//                    return tokenSession.getTokenType().name();
-//                }
-//            });
-//
-//        } catch (Exception e) {
-//            LOG.warn(String.format("Unauthorised access with token: %s", token));
-//            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
-//        }
+                            return null;
+                        }
+                    };
+                }
+
+                @Override
+                public boolean isUserInRole(String role) {
+                    return true;
+                }
+
+                @Override
+                public boolean isSecure() {
+                    return false;
+                }
+
+                @Override
+                public String getAuthenticationScheme() {
+                    return null;
+                }
+            });
+
+        } catch (Exception e) {
+            LOG.warn(String.format("Unauthorised access with token: %s", token));
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+        }
     }
 }

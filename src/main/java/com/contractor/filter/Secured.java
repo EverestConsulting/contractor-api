@@ -1,5 +1,7 @@
 package com.contractor.filter;
 
+import com.contractor.model.enums.UserRights;
+
 import javax.ws.rs.NameBinding;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -15,5 +17,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target({TYPE, METHOD})
 public @interface Secured {
-//    UserRights[] value() default {};
+    UserRights[] value() default {};
 }

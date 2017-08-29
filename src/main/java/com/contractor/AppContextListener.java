@@ -14,6 +14,7 @@ public class AppContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        App.init();
         LOG.info("*** contextInitialized ***");
     }
 

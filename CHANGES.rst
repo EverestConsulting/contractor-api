@@ -13,6 +13,12 @@ TODO
 unreleased
 ==========
 
+Code Cleanup
+
+    - Cleaned up unnecessary code.
+    - Added basic entry points.
+    - Added UserRights enum based on entry points.
+
 Hibernate Integration
 
     - Added hibernate/postgresql connection.

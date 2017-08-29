@@ -16,7 +16,7 @@ public class Crypt {
     }
 
     /**
-     * Checkes if two hashes match, based on BCrypt implementation
+     * Checks if two hashes match, based on BCrypt implementation
      * @param plainText String un-encrypted string.
      * @param hashed String hash to compare.
      * @return boolean true if matched.
