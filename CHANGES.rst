@@ -1,9 +1,23 @@
 ==========================
 Changes for contractor API
 ==========================
+====
+TODO
+====
+
+    - Implement Authorizaton/Authentication.
+    - Implement test DB schema/scripts.
+    - Integrate models from db.
+    - Implement REST Api logic for created models.
 
 unreleased
 ==========
+
+Hibernate Integration
+
+    - Added hibernate/postgresql connection.
+    - Added drop and create template scripts.
+    - BCrypt integration.
 
 Core Development
 
