@@ -5,12 +5,29 @@ Changes for contractor API
 TODO
 ====
 
-    - Implement Authorizaton/Authentication.
-    - Integrate models from db.
-    - Implement REST Api logic for created models.
+    - REST API Logic
+        - Implement Authorizaton/Authentication.
+        - Implement REST Api logic for created models.
+
+    - Business Logic
+    	- DB restructuring based on business models and process.
+    	- Implement fetching user from db base on LoginRequest. If no user matched return Not Found. If found create new token session and return 200 ok with LoginResponse.
+    	- Implement fetching SessionToken from db by calling security context and return 404 not found or 200 ok.
+    	- Implement passing id as user/id. Implement fetching user data by user id from security context.
+    	- Implement creating new user logic/registration.
+    	- Implement updating user logic.
+    	- Implement deactivating/deleting user logic.
+    	- Implement fetching jobs based on business logic.
+    	- Implement creating jobs logic.
+    	- Implement updating jobs logic.
+    	- Implement removing jobs logic.
 
 unreleased
 ==========
+
+Code Refactoring
+
+    - Added controller classes for handling business logic.
 
 Implement and test DB schema/scripts.
 

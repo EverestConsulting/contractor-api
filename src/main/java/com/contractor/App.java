@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by dpecanac on 29.8.2017.
+ * Singleton class which handles constants fetched from db used across the app (ex. rights and roles).
  */
 public class App {
     private static final Logger LOG = LoggerFactory.getLogger(App.class.getSimpleName());
@@ -18,12 +18,12 @@ public class App {
     private Map<String, List<String>> rightsAndRoles;
 
     private App() {
-        //TODO implement fetching user rights and roles
-        rightsAndRoles = new HashMap<>(0);
-
         LOG.info("%s initialized!!!");
     }
 
+    /**
+     * init singleton.
+     */
     static void init() {
         if (null != INSTANCE) {
             LOG.error(String.format("%S already initialized!!!", App.class.getSimpleName()));
@@ -34,6 +34,9 @@ public class App {
     }
 
 
+    /**
+     * @return App instance
+     */
     public static App getInstance() {
         if (null == INSTANCE) {
             LOG.error(String.format("%s not properly initialized!!!", App.class.getSimpleName()));
@@ -41,6 +44,27 @@ public class App {
         return INSTANCE;
     }
 
+    /**
+     * Loads all app constants.
+     */
+    private void loadConfig() {
+        //TODO implement fetching user rights and roles
+        rightsAndRoles = new HashMap<>(0);
+    }
+
+    /**
+     * Clear all app constants and reload them.
+     */
+    public void reloadConfig() {
+        rightsAndRoles.clear();
+
+        loadConfig();
+    }
+
+    /**
+     *
+     * @return Map with user rights and roles.
+     */
     public Map<String, List<String>> getRightsAndRoles() {
         return rightsAndRoles;
     }

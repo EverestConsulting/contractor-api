@@ -4,9 +4,7 @@
     <session-factory>
         <!-- Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost/contractor</property>
-        <property name="hibernate.connection.username"></property>
-        <property name="hibernate.connection.password"></property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5433/contractor</property>
         <!-- SQL dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL82Dialect</property>
         <!-- Print executed SQL to stdout -->
@@ -22,6 +20,13 @@
         <mapping class="com.contractor.model.entity.job.Job" />
 
         <mapping class="com.contractor.model.entity.SessionToken" />
+        <mapping class="com.contractor.model.entity.JobType"/>
+        <mapping class="com.contractor.model.entity.Jobs"/>
+        <mapping class="com.contractor.model.entity.Pricing"/>
+        <mapping class="com.contractor.model.entity.PricingPlan"/>
+        <mapping class="com.contractor.model.entity.UserRight"/>
+        <mapping class="com.contractor.model.entity.UserRole"/>
+        <mapping class="com.contractor.model.entity.Users"/>
 
     </session-factory>
 </hibernate-configuration>

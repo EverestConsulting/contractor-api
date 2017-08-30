@@ -1,5 +1,8 @@
 package com.contractor;
 
+import com.contractor.controller.JobsController;
+import com.contractor.controller.SessionController;
+import com.contractor.controller.UserController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +18,9 @@ public class AppContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         App.init();
+        SessionController.init();
+        UserController.init();
+        JobsController.init();
         LOG.info("*** contextInitialized ***");
     }
 
