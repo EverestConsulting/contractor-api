@@ -13,7 +13,10 @@ Gradle
 
 Project build tool is gradle which You can fetch from `https://gradle.org/install/`
 
+PostgreSQL
+----------
 
+Project requires PostgreSQl version 9.x, which You can download from `https://www.postgresql.org/download/`
 
 Installation instructions
 =========================

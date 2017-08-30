@@ -4,7 +4,7 @@
     <session-factory>
         <!-- Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost/contractordb</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost/contractor</property>
         <property name="hibernate.connection.username"></property>
         <property name="hibernate.connection.password"></property>
         <!-- SQL dialect -->
@@ -21,7 +21,7 @@
         <mapping class="com.contractor.model.entity.job.JobType" />
         <mapping class="com.contractor.model.entity.job.Job" />
 
-        <mapping class="com.contractor.model.entity.TokenSession" />
+        <mapping class="com.contractor.model.entity.SessionToken" />
 
     </session-factory>
 </hibernate-configuration>

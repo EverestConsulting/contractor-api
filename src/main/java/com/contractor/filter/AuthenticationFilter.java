@@ -1,6 +1,5 @@
 package com.contractor.filter;
 
-import com.contractor.model.entity.TokenSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

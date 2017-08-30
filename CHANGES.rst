@@ -6,12 +6,15 @@ TODO
 ====
 
     - Implement Authorizaton/Authentication.
-    - Implement test DB schema/scripts.
     - Integrate models from db.
     - Implement REST Api logic for created models.
 
 unreleased
 ==========
+
+Implement and test DB schema/scripts.
+
+    - Refactoring db scripts in init_db.sql .
 
 Code Cleanup
 
