@@ -5,27 +5,27 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 public class JobsPK implements Serializable {
-    private int jobId;
-    private int createdByUserId;
+    private long jobId;
+    private long jobCreatedByUserId;
 
     @Column(name = "job_id", nullable = false)
     @Id
-    public int getJobId() {
+    public long getJobId() {
         return jobId;
     }
 
-    public void setJobId(int jobId) {
+    public void setJobId(long jobId) {
         this.jobId = jobId;
     }
 
-    @Column(name = "created_by_user_id", nullable = false)
+    @Column(name = "job_created_by_user_id", nullable = false)
     @Id
-    public int getCreatedByUserId() {
-        return createdByUserId;
+    public long getJobCreatedByUserId() {
+        return jobCreatedByUserId;
     }
 
-    public void setCreatedByUserId(int createdByUserId) {
-        this.createdByUserId = createdByUserId;
+    public void setJobCreatedByUserId(long jobCreatedByUserId) {
+        this.jobCreatedByUserId = jobCreatedByUserId;
     }
 
     @Override
@@ -36,15 +36,15 @@ public class JobsPK implements Serializable {
         JobsPK jobsPK = (JobsPK) o;
 
         if (jobId != jobsPK.jobId) return false;
-        if (createdByUserId != jobsPK.createdByUserId) return false;
+        if (jobCreatedByUserId != jobsPK.jobCreatedByUserId) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = jobId;
-        result = 31 * result + createdByUserId;
+        int result = (int) (jobId ^ (jobId >>> 32));
+        result = 31 * result + (int) (jobCreatedByUserId ^ (jobCreatedByUserId >>> 32));
         return result;
     }
 }

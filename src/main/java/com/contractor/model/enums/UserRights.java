@@ -5,13 +5,17 @@ package com.contractor.model.enums;
  */
 public enum UserRights {
     deleteJob,
+    deleteJobType,
     deleteUser,
     getJob,
+    getJobType,
     getUser,
     login,
     logout,
     postJob,
+    postJobType,
     postUser,
     putJob,
+    putJobType,
     putUser,
 }

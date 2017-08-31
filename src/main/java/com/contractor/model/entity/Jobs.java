@@ -6,38 +6,39 @@ import java.sql.Timestamp;
 @Entity
 @IdClass(JobsPK.class)
 public class Jobs {
-    private int jobId;
-    private Integer jobType;
+    private long jobId;
+    private short jobTypeId;
     private String jobLocation;
-    private int createdByUserId;
-    private Integer assignedToUserId;
-    private Integer pricingId;
-    private Timestamp created;
-    private Timestamp assigned;
-    private Timestamp completed;
-    private JobType jobTypeByJobType;
-    private Users usersByCreatedByUserId;
-    private Users usersByAssignedToUserId;
-    private Pricing pricingByPricingId;
+    private long jobCreatedByUserId;
+    private long jobAssignedToUserId;
+    private short jobPricingId;
+    private String jobNotes;
+    private Timestamp jobCreated;
+    private Timestamp jobAssigned;
+    private Timestamp jobCompleted;
+    private JobType jobTypeByJobTypeId;
+    private Users usersByJobCreatedByUserId;
+    private Users usersByJobAssignedToUserId;
+    private Pricing pricingByJobPricingId;
 
     @Id
     @Column(name = "job_id", nullable = false)
-    public int getJobId() {
+    public long getJobId() {
         return jobId;
     }
 
-    public void setJobId(int jobId) {
+    public void setJobId(long jobId) {
         this.jobId = jobId;
     }
 
     @Basic
-    @Column(name = "job_type", nullable = true)
-    public Integer getJobType() {
-        return jobType;
+    @Column(name = "job_type_id", nullable = true)
+    public short getJobTypeId() {
+        return jobTypeId;
     }
 
-    public void setJobType(Integer jobType) {
-        this.jobType = jobType;
+    public void setJobTypeId(short jobTypeId) {
+        this.jobTypeId = jobTypeId;
     }
 
     @Basic
@@ -51,63 +52,73 @@ public class Jobs {
     }
 
     @Id
-    @Column(name = "created_by_user_id", nullable = false)
-    public int getCreatedByUserId() {
-        return createdByUserId;
+    @Column(name = "job_created_by_user_id", nullable = false)
+    public long getJobCreatedByUserId() {
+        return jobCreatedByUserId;
     }
 
-    public void setCreatedByUserId(int createdByUserId) {
-        this.createdByUserId = createdByUserId;
-    }
-
-    @Basic
-    @Column(name = "assigned_to_user_id", nullable = true)
-    public Integer getAssignedToUserId() {
-        return assignedToUserId;
-    }
-
-    public void setAssignedToUserId(Integer assignedToUserId) {
-        this.assignedToUserId = assignedToUserId;
+    public void setJobCreatedByUserId(long jobCreatedByUserId) {
+        this.jobCreatedByUserId = jobCreatedByUserId;
     }
 
     @Basic
-    @Column(name = "pricing_id", nullable = true)
-    public Integer getPricingId() {
-        return pricingId;
+    @Column(name = "job_assigned_to_user_id", nullable = true)
+    public long getJobAssignedToUserId() {
+        return jobAssignedToUserId;
     }
 
-    public void setPricingId(Integer pricingId) {
-        this.pricingId = pricingId;
-    }
-
-    @Basic
-    @Column(name = "created", nullable = true)
-    public Timestamp getCreated() {
-        return created;
-    }
-
-    public void setCreated(Timestamp created) {
-        this.created = created;
+    public void setJobAssignedToUserId(long jobAssignedToUserId) {
+        this.jobAssignedToUserId = jobAssignedToUserId;
     }
 
     @Basic
-    @Column(name = "assigned", nullable = true)
-    public Timestamp getAssigned() {
-        return assigned;
+    @Column(name = "job_pricing_id", nullable = true)
+    public short getJobPricingId() {
+        return jobPricingId;
     }
 
-    public void setAssigned(Timestamp assigned) {
-        this.assigned = assigned;
+    public void setJobPricingId(short jobPricingId) {
+        this.jobPricingId = jobPricingId;
     }
 
     @Basic
-    @Column(name = "completed", nullable = true)
-    public Timestamp getCompleted() {
-        return completed;
+    @Column(name = "job_notes", nullable = true, length = 255)
+    public String getJobNotes() {
+        return jobNotes;
     }
 
-    public void setCompleted(Timestamp completed) {
-        this.completed = completed;
+    public void setJobNotes(String jobNotes) {
+        this.jobNotes = jobNotes;
+    }
+
+    @Basic
+    @Column(name = "job_created", nullable = true)
+    public Timestamp getJobCreated() {
+        return jobCreated;
+    }
+
+    public void setJobCreated(Timestamp jobCreated) {
+        this.jobCreated = jobCreated;
+    }
+
+    @Basic
+    @Column(name = "job_assigned", nullable = true)
+    public Timestamp getJobAssigned() {
+        return jobAssigned;
+    }
+
+    public void setJobAssigned(Timestamp jobAssigned) {
+        this.jobAssigned = jobAssigned;
+    }
+
+    @Basic
+    @Column(name = "job_completed", nullable = true)
+    public Timestamp getJobCompleted() {
+        return jobCompleted;
+    }
+
+    public void setJobCompleted(Timestamp jobCompleted) {
+        this.jobCompleted = jobCompleted;
     }
 
     @Override
@@ -118,70 +129,71 @@ public class Jobs {
         Jobs jobs = (Jobs) o;
 
         if (jobId != jobs.jobId) return false;
-        if (createdByUserId != jobs.createdByUserId) return false;
-        if (jobType != null ? !jobType.equals(jobs.jobType) : jobs.jobType != null) return false;
+        if (jobTypeId != jobs.jobTypeId) return false;
+        if (jobCreatedByUserId != jobs.jobCreatedByUserId) return false;
+        if (jobAssignedToUserId != jobs.jobAssignedToUserId) return false;
+        if (jobPricingId != jobs.jobPricingId) return false;
         if (jobLocation != null ? !jobLocation.equals(jobs.jobLocation) : jobs.jobLocation != null) return false;
-        if (assignedToUserId != null ? !assignedToUserId.equals(jobs.assignedToUserId) : jobs.assignedToUserId != null)
-            return false;
-        if (pricingId != null ? !pricingId.equals(jobs.pricingId) : jobs.pricingId != null) return false;
-        if (created != null ? !created.equals(jobs.created) : jobs.created != null) return false;
-        if (assigned != null ? !assigned.equals(jobs.assigned) : jobs.assigned != null) return false;
-        if (completed != null ? !completed.equals(jobs.completed) : jobs.completed != null) return false;
+        if (jobNotes != null ? !jobNotes.equals(jobs.jobNotes) : jobs.jobNotes != null) return false;
+        if (jobCreated != null ? !jobCreated.equals(jobs.jobCreated) : jobs.jobCreated != null) return false;
+        if (jobAssigned != null ? !jobAssigned.equals(jobs.jobAssigned) : jobs.jobAssigned != null) return false;
+        if (jobCompleted != null ? !jobCompleted.equals(jobs.jobCompleted) : jobs.jobCompleted != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = jobId;
-        result = 31 * result + (jobType != null ? jobType.hashCode() : 0);
+        int result = (int) (jobId ^ (jobId >>> 32));
+        result = 31 * result + (int) jobTypeId;
         result = 31 * result + (jobLocation != null ? jobLocation.hashCode() : 0);
-        result = 31 * result + createdByUserId;
-        result = 31 * result + (assignedToUserId != null ? assignedToUserId.hashCode() : 0);
-        result = 31 * result + (pricingId != null ? pricingId.hashCode() : 0);
-        result = 31 * result + (created != null ? created.hashCode() : 0);
-        result = 31 * result + (assigned != null ? assigned.hashCode() : 0);
-        result = 31 * result + (completed != null ? completed.hashCode() : 0);
+        result = 31 * result + (int) (jobCreatedByUserId ^ (jobCreatedByUserId >>> 32));
+        result = 31 * result + (int) (jobAssignedToUserId ^ (jobAssignedToUserId >>> 32));
+        result = 31 * result + (int) jobPricingId;
+        result = 31 * result + (jobNotes != null ? jobNotes.hashCode() : 0);
+        result = 31 * result + (jobCreated != null ? jobCreated.hashCode() : 0);
+        result = 31 * result + (jobAssigned != null ? jobAssigned.hashCode() : 0);
+        result = 31 * result + (jobCompleted != null ? jobCompleted.hashCode() : 0);
         return result;
     }
 
     @ManyToOne
-    @JoinColumn(name = "job_type", referencedColumnName = "job_type_id")
-    public JobType getJobTypeByJobType() {
-        return jobTypeByJobType;
+    @JoinColumn(name = "job_type_id", referencedColumnName = "job_type_id")
+    public JobType getJobTypeByJobTypeId() {
+        return jobTypeByJobTypeId;
     }
 
-    public void setJobTypeByJobType(JobType jobTypeByJobType) {
-        this.jobTypeByJobType = jobTypeByJobType;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "created_by_user_id", referencedColumnName = "user_id", nullable = false)
-    public Users getUsersByCreatedByUserId() {
-        return usersByCreatedByUserId;
-    }
-
-    public void setUsersByCreatedByUserId(Users usersByCreatedByUserId) {
-        this.usersByCreatedByUserId = usersByCreatedByUserId;
+    public void setJobTypeByJobTypeId(JobType jobTypeByJobTypeId) {
+        this.jobTypeByJobTypeId = jobTypeByJobTypeId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "assigned_to_user_id", referencedColumnName = "user_id")
-    public Users getUsersByAssignedToUserId() {
-        return usersByAssignedToUserId;
+    @JoinColumn(name = "job_created_by_user_id", referencedColumnName = "user_id", nullable = false)
+    public Users getUsersByJobCreatedByUserId() {
+        return usersByJobCreatedByUserId;
     }
 
-    public void setUsersByAssignedToUserId(Users usersByAssignedToUserId) {
-        this.usersByAssignedToUserId = usersByAssignedToUserId;
+    public void setUsersByJobCreatedByUserId(Users usersByJobCreatedByUserId) {
+        this.usersByJobCreatedByUserId = usersByJobCreatedByUserId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "pricing_id", referencedColumnName = "pricing_id")
-    public Pricing getPricingByPricingId() {
-        return pricingByPricingId;
+    @JoinColumn(name = "job_assigned_to_user_id", referencedColumnName = "user_id")
+    public Users getUsersByJobAssignedToUserId() {
+        return usersByJobAssignedToUserId;
     }
 
-    public void setPricingByPricingId(Pricing pricingByPricingId) {
-        this.pricingByPricingId = pricingByPricingId;
+    public void setUsersByJobAssignedToUserId(Users usersByJobAssignedToUserId) {
+        this.usersByJobAssignedToUserId = usersByJobAssignedToUserId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "job_pricing_id", referencedColumnName = "pricing_id")
+    public Pricing getPricingByJobPricingId() {
+        return pricingByJobPricingId;
+    }
+
+    public void setPricingByJobPricingId(Pricing pricingByJobPricingId) {
+        this.pricingByJobPricingId = pricingByJobPricingId;
     }
 }

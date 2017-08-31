@@ -138,4 +138,37 @@ public class ApiController {
         return Response.noContent().build();
     }
 
+    @GET
+    @Secured({UserRights.getJobType})
+    @Path("/job-type")
+    public Response getJobType(@Context SecurityContext securityContext) {
+        //TODO
+        return Response.noContent().build();
+    }
+
+    @POST
+    @Secured({UserRights.getJobType})
+    @Path("/job-type")
+    public Response postJobType(@Context SecurityContext securityContext) {
+        //TODO
+        return Response.noContent().build();
+    }
+
+    @PUT
+    @Secured({UserRights.getJobType})
+    @Path("/job-type/{jobTypeId}")
+    public Response putJobType(@Context SecurityContext securityContext, @NotNull @PathParam("jobTypeId") Integer jobTypeId) {
+        //TODO
+        return Response.noContent().build();
+    }
+
+    @DELETE
+    @Secured({UserRights.getJobType})
+    @Path("/job-type/{jobTypeId}")
+    public Response deleteJobType(@Context SecurityContext securityContext,
+                                  @NotNull @PathParam("jobTypeId") Integer jobTypeId) {
+        //TODO
+        return Response.noContent().build();
+    }
+
 }

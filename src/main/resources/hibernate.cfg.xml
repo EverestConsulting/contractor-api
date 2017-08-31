@@ -12,12 +12,6 @@
         <!-- Drop and re-create all database on startup -->
         <!--<property name="hibernate.hbm2ddl.auto">create-drop</property>-->
         <!-- Annotated entity classes -->
-        <mapping class="com.contractor.model.entity.user.User" />
-        <mapping class="com.contractor.model.entity.user.UserRight" />
-        <mapping class="com.contractor.model.entity.user.UserRole" />
-
-        <mapping class="com.contractor.model.entity.job.JobType" />
-        <mapping class="com.contractor.model.entity.job.Job" />
 
         <mapping class="com.contractor.model.entity.SessionToken" />
         <mapping class="com.contractor.model.entity.JobType"/>

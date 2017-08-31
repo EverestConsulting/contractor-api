@@ -6,7 +6,7 @@ import java.util.Collection;
 
 @Entity
 public class Users {
-    private int userId;
+    private long userId;
     private String userName;
     private String firstName;
     private String lastName;
@@ -16,9 +16,10 @@ public class Users {
     private String country;
     private Short zipCode;
     private String email;
-    private int userRoleId;
+    private short userRoleId;
     private String phoneNumber;
     private Timestamp created;
+    private Timestamp lastModified;
     private Collection<Jobs> jobsByUserId;
     private Collection<Jobs> jobsByUserId_0;
     private Collection<SessionToken> sessionTokensByUserId;
@@ -26,11 +27,11 @@ public class Users {
 
     @Id
     @Column(name = "user_id", nullable = false)
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -126,11 +127,11 @@ public class Users {
 
     @Basic
     @Column(name = "user_role_id", nullable = false)
-    public int getUserRoleId() {
+    public short getUserRoleId() {
         return userRoleId;
     }
 
-    public void setUserRoleId(int userRoleId) {
+    public void setUserRoleId(short userRoleId) {
         this.userRoleId = userRoleId;
     }
 
@@ -154,6 +155,16 @@ public class Users {
         this.created = created;
     }
 
+    @Basic
+    @Column(name = "last_modified", nullable = true)
+    public Timestamp getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Timestamp lastModified) {
+        this.lastModified = lastModified;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -174,13 +185,14 @@ public class Users {
         if (email != null ? !email.equals(users.email) : users.email != null) return false;
         if (phoneNumber != null ? !phoneNumber.equals(users.phoneNumber) : users.phoneNumber != null) return false;
         if (created != null ? !created.equals(users.created) : users.created != null) return false;
+        if (lastModified != null ? !lastModified.equals(users.lastModified) : users.lastModified != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = userId;
+        int result = (int) (userId ^ (userId >>> 32));
         result = 31 * result + (userName != null ? userName.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
@@ -190,13 +202,14 @@ public class Users {
         result = 31 * result + (country != null ? country.hashCode() : 0);
         result = 31 * result + (zipCode != null ? zipCode.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + userRoleId;
+        result = 31 * result + (int) userRoleId;
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + (created != null ? created.hashCode() : 0);
+        result = 31 * result + (lastModified != null ? lastModified.hashCode() : 0);
         return result;
     }
 
-    @OneToMany(mappedBy = "usersByCreatedByUserId")
+    @OneToMany(mappedBy = "usersByJobCreatedByUserId")
     public Collection<Jobs> getJobsByUserId() {
         return jobsByUserId;
     }
@@ -205,7 +218,7 @@ public class Users {
         this.jobsByUserId = jobsByUserId;
     }
 
-    @OneToMany(mappedBy = "usersByAssignedToUserId")
+    @OneToMany(mappedBy = "usersByJobAssignedToUserId")
     public Collection<Jobs> getJobsByUserId_0() {
         return jobsByUserId_0;
     }

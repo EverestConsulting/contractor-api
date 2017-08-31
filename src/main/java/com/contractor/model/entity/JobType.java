@@ -6,29 +6,40 @@ import java.util.Collection;
 @Entity
 @Table(name = "job_type", schema = "public", catalog = "contractor")
 public class JobType {
-    private int jobTypeId;
-    private String job;
+    private short jobTypeId;
+    private String jobTypeTitle;
+    private String jobTypeDescription;
     private Collection<Jobs> jobsByJobTypeId;
     private Collection<Pricing> pricingsByJobTypeId;
 
     @Id
     @Column(name = "job_type_id", nullable = false)
-    public int getJobTypeId() {
+    public short getJobTypeId() {
         return jobTypeId;
     }
 
-    public void setJobTypeId(int jobTypeId) {
+    public void setJobTypeId(short jobTypeId) {
         this.jobTypeId = jobTypeId;
     }
 
     @Basic
-    @Column(name = "job", nullable = false, length = 30)
-    public String getJob() {
-        return job;
+    @Column(name = "job_type_title", nullable = false, length = 30)
+    public String getJobTypeTitle() {
+        return jobTypeTitle;
     }
 
-    public void setJob(String job) {
-        this.job = job;
+    public void setJobTypeTitle(String jobTypeTitle) {
+        this.jobTypeTitle = jobTypeTitle;
+    }
+
+    @Basic
+    @Column(name = "job_type_description", nullable = false, length = 255)
+    public String getJobTypeDescription() {
+        return jobTypeDescription;
+    }
+
+    public void setJobTypeDescription(String jobTypeDescription) {
+        this.jobTypeDescription = jobTypeDescription;
     }
 
     @Override
@@ -39,19 +50,23 @@ public class JobType {
         JobType jobType = (JobType) o;
 
         if (jobTypeId != jobType.jobTypeId) return false;
-        if (job != null ? !job.equals(jobType.job) : jobType.job != null) return false;
+        if (jobTypeTitle != null ? !jobTypeTitle.equals(jobType.jobTypeTitle) : jobType.jobTypeTitle != null)
+            return false;
+        if (jobTypeDescription != null ? !jobTypeDescription.equals(jobType.jobTypeDescription) : jobType.jobTypeDescription != null)
+            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = jobTypeId;
-        result = 31 * result + (job != null ? job.hashCode() : 0);
+        int result = (int) jobTypeId;
+        result = 31 * result + (jobTypeTitle != null ? jobTypeTitle.hashCode() : 0);
+        result = 31 * result + (jobTypeDescription != null ? jobTypeDescription.hashCode() : 0);
         return result;
     }
 
-    @OneToMany(mappedBy = "jobTypeByJobType")
+    @OneToMany(mappedBy = "jobTypeByJobTypeId")
     public Collection<Jobs> getJobsByJobTypeId() {
         return jobsByJobTypeId;
     }

@@ -6,8 +6,8 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "session_token", schema = "public", catalog = "contractor")
 public class SessionToken {
-    private int sessionTokenId;
-    private int userId;
+    private long sessionTokenId;
+    private long userId;
     private String sessionToken;
     private Timestamp created;
     private Timestamp validity;
@@ -15,21 +15,21 @@ public class SessionToken {
 
     @Id
     @Column(name = "session_token_id", nullable = false)
-    public int getSessionTokenId() {
+    public long getSessionTokenId() {
         return sessionTokenId;
     }
 
-    public void setSessionTokenId(int sessionTokenId) {
+    public void setSessionTokenId(long sessionTokenId) {
         this.sessionTokenId = sessionTokenId;
     }
 
     @Basic
     @Column(name = "user_id", nullable = false)
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -81,8 +81,8 @@ public class SessionToken {
 
     @Override
     public int hashCode() {
-        int result = sessionTokenId;
-        result = 31 * result + userId;
+        int result = (int) (sessionTokenId ^ (sessionTokenId >>> 32));
+        result = 31 * result + (int) (userId ^ (userId >>> 32));
         result = 31 * result + (sessionToken != null ? sessionToken.hashCode() : 0);
         result = 31 * result + (created != null ? created.hashCode() : 0);
         result = 31 * result + (validity != null ? validity.hashCode() : 0);

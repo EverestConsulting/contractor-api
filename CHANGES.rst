@@ -25,6 +25,11 @@ TODO
 unreleased
 ==========
 
+DB Restructuring
+
+    - Updated db tables.
+    - Recreated entities based on new table models.
+
 Code Refactoring
 
     - Added controller classes for handling business logic.

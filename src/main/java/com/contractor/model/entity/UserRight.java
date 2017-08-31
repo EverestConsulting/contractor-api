@@ -5,16 +5,16 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user_right", schema = "public", catalog = "contractor")
 public class UserRight {
-    private int userRightId;
+    private short userRightId;
     private String userRight;
 
     @Id
     @Column(name = "user_right_id", nullable = false)
-    public int getUserRightId() {
+    public short getUserRightId() {
         return userRightId;
     }
 
-    public void setUserRightId(int userRightId) {
+    public void setUserRightId(short userRightId) {
         this.userRightId = userRightId;
     }
 
@@ -43,7 +43,7 @@ public class UserRight {
 
     @Override
     public int hashCode() {
-        int result = userRightId;
+        int result = (int) userRightId;
         result = 31 * result + (userRight != null ? userRight.hashCode() : 0);
         return result;
     }

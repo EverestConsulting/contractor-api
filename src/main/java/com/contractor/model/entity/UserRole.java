@@ -7,18 +7,18 @@ import java.util.Collection;
 @Entity
 @Table(name = "user_role", schema = "public", catalog = "contractor")
 public class UserRole {
-    private int userRoleId;
+    private short userRoleId;
     private String userRoleName;
     private Serializable userRight;
     private Collection<Users> usersByUserRoleId;
 
     @Id
     @Column(name = "user_role_id", nullable = false)
-    public int getUserRoleId() {
+    public short getUserRoleId() {
         return userRoleId;
     }
 
-    public void setUserRoleId(int userRoleId) {
+    public void setUserRoleId(short userRoleId) {
         this.userRoleId = userRoleId;
     }
 
@@ -59,7 +59,7 @@ public class UserRole {
 
     @Override
     public int hashCode() {
-        int result = userRoleId;
+        int result = (int) userRoleId;
         result = 31 * result + (userRoleName != null ? userRoleName.hashCode() : 0);
         result = 31 * result + (userRight != null ? userRight.hashCode() : 0);
         return result;
