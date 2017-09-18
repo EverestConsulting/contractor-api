@@ -1,5 +1,8 @@
 package com.contractor.controller;
 
+import com.contractor.model.dao.UsersDao;
+import com.contractor.model.entity.Users;
+import com.contractor.model.request.RegistrationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +34,12 @@ public class UserController {
         return INSTANCE;
     }
 
-    public Object createUser() {
-        return null;
+    public Object createUser(RegistrationRequest request) {
+        Users user = new Users();
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+
+        return new UsersDao().createUser(user);
     }
 
     public Object fetchUser() {

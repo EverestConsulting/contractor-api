@@ -1,12 +1,18 @@
 package com.contractor;
 
 
+import com.contractor.model.dao.UserRightDao;
+import com.contractor.model.dao.UserRoleDao;
+import com.contractor.model.dao.UsersDao;
+import com.contractor.model.entity.UserRight;
+import com.contractor.model.entity.UserRole;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Singleton class which handles constants fetched from db used across the app (ex. rights and roles).
@@ -15,10 +21,13 @@ public class App {
     private static final Logger LOG = LoggerFactory.getLogger(App.class.getSimpleName());
     private static App INSTANCE;
 
-    private Map<String, List<String>> rightsAndRoles;
+    private Map<Integer, Set<Integer>> rolesAndRights;
+    private Map<Integer, UserRole> userRoles;
+    private Map<Integer, UserRight> userRights;
 
     private App() {
-        LOG.info("%s initialized!!!");
+        //singleton
+        LOG.info(String.format("%s initialized!!!", App.class.getSimpleName()));
     }
 
     /**
@@ -26,7 +35,7 @@ public class App {
      */
     static void init() {
         if (null != INSTANCE) {
-            LOG.error(String.format("%S already initialized!!!", App.class.getSimpleName()));
+            LOG.error(String.format("%s already initialized!!!", App.class.getSimpleName()));
             return;
         }
 
@@ -48,24 +57,57 @@ public class App {
      * Loads all app constants.
      */
     private void loadConfig() {
-        //TODO implement fetching user rights and roles
-        rightsAndRoles = new HashMap<>(0);
+        rolesAndRights = new HashMap<>(0);
+        userRoles = new HashMap<>(0);
+        userRights = new HashMap<>(0);
+
+        userRoles = new UserRoleDao().fetchUserRoles();
+        userRights = new UserRightDao().fetchUserRights();
+
+        if (null == userRoles) {
+            LOG.error("User Roles empty");
+            return;
+        }
+
+        if (null == userRights) {
+            LOG.error("User Rights empty");
+            return;
+        }
+
+        for (Map.Entry<Integer, UserRole> roleEntry : userRoles.entrySet()) {
+            rolesAndRights.put(roleEntry.getKey(), (Set<Integer>) roleEntry.getValue().getUserRight());
+        }
     }
 
     /**
      * Clear all app constants and reload them.
      */
     public void reloadConfig() {
-        rightsAndRoles.clear();
+        rolesAndRights.clear();
+        userRoles.clear();
+        userRights.clear();
 
         loadConfig();
     }
 
     /**
-     *
      * @return Map with user rights and roles.
      */
-    public Map<String, List<String>> getRightsAndRoles() {
-        return rightsAndRoles;
+    public Map<Integer, Set<Integer>> getRolesAndRights() {
+        return rolesAndRights;
+    }
+
+    /**
+     * @return Map with user roles
+     */
+    public Map<Integer, UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    /**
+     * @return Map with user rights
+     */
+    public Map<Integer, UserRight> getUserRights() {
+        return userRights;
     }
 }

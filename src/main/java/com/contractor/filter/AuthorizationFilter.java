@@ -1,8 +1,10 @@
 package com.contractor.filter;
 
-import com.contractor.model.entity.user.User;
+import com.contractor.App;
+import com.contractor.model.dao.UsersDao;
+import com.contractor.model.entity.UserRight;
+import com.contractor.model.entity.Users;
 import com.contractor.model.enums.UserRights;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.EnumUtils;
 
 import javax.annotation.Priority;
@@ -34,16 +36,14 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         // Extract the rights declared by it
         Class<?> resourceClass = resourceInfo.getResourceClass();
         List<UserRights> classRights = extractRights(resourceClass);
-//
-//        // Get the resource method which matches with the requested URL
-//        // Extract the rights declared by it
+
+        // Get the resource method which matches with the requested URL
+        // Extract the rights declared by it
         Method resourceMethod = resourceInfo.getResourceMethod();
         List<UserRights> methodRights = extractRights(resourceMethod);
-//
+
         try {
-            // User.fetchUserById(requestContext.getSecurityContext().getUserPrincipal().getName());
-            //TODO implement above use case when db ready
-            User user = null;
+            Users user = new UsersDao().fetchUserById(requestContext.getSecurityContext().getUserPrincipal().getName());
 
             if (null == user) {
                 throw new SecurityException("Could not find user");
@@ -74,31 +74,21 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         }
     }
 
-    private void checkPermissions(List<UserRights> allowedRights, @NotNull User user) throws SecurityException {
+    private void checkPermissions(List<UserRights> allowedRights, @NotNull Users user) throws SecurityException {
         // Check if the user contains one of the allowed rights
         // Throw an Exception if the user has not permission to execute the method
         boolean hasRight = false;
 
-        Set<UserRights> userRights = new HashSet<>();
+        Set<Integer> rightsByCurrentUserRole = App.getInstance().getRolesAndRights().get((int) user.getUserRoleId());
 
-        //TODO uncomment when db ready
-        //fetch list of user rights by user roles
-//        if (!ArrayUtils.isEmpty(user.getRoles())) {
-//            for (String userRole : user.getRoles()) {
-//                if (EnumUtils.isValidEnum(UserRoles.class, userRole)) {
-//                    userRights.addAll(App.instance().getUserRolesMapping().get(UserRoles.valueOf(userRole)));
-//                }
-//            }
-//        }
-//
-//        //check if user has some additional user rights
-//        if (!ArrayUtils.isEmpty(user.getRights())) {
-//            for (String userRight : user.getRights()) {
-//                if (EnumUtils.isValidEnum(UserRights.class, userRight)) {
-//                    userRights.add(UserRights.valueOf(userRight));
-//                }
-//            }
-//        }
+        Set<UserRights> userRights = new HashSet<>(0);
+
+        for (Integer userRightId : rightsByCurrentUserRole) {
+            UserRight userRight = App.getInstance().getUserRights().get(userRightId);
+            if (EnumUtils.isValidEnum(UserRights.class, userRight.getUserRight())) {
+                userRights.add(UserRights.valueOf(userRight.getUserRight()));
+            }
+        }
 
         //match user rights with required method rights
         for (UserRights allowedRight : allowedRights) {

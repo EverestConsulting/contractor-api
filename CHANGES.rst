@@ -6,7 +6,6 @@ TODO
 ====
 
     - REST API Logic
-        - Implement Authorizaton/Authentication.
         - Implement REST Api logic for created models.
 
     - Business Logic
@@ -24,6 +23,11 @@ TODO
 
 unreleased
 ==========
+
+
+REST API Logic
+
+    - Implement Authorization/Authentication.
 
 DB Restructuring
 

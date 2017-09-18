@@ -1,6 +1,6 @@
 package com.contractor.api;
 
-import com.contractor.controller.JobsController;
+
 import com.contractor.controller.SessionController;
 import com.contractor.controller.UserController;
 import com.contractor.filter.Secured;
@@ -8,6 +8,7 @@ import com.contractor.model.entity.Jobs;
 import com.contractor.model.entity.Users;
 import com.contractor.model.enums.UserRights;
 import com.contractor.model.request.LoginRequest;
+import com.contractor.model.request.RegistrationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,20 +38,14 @@ public class ApiController {
     @Path("/login")
     public Response login(@Context SecurityContext securityContext,
                           @NotNull LoginRequest loginRequest) {
-
-        //TODO: Implement fetching user from db base on LoginRequest. If no user matched return Not Found. If found create new token session and return 200 ok with LoginResponse.
-//        SessionController.getInstance().login(loginRequest);
-        return Response.noContent().build();
+        return SessionController.getInstance().login(loginRequest);
     }
 
     @DELETE
     @Secured({UserRights.logout})
     @Path("/logout")
     public Response logout(@Context SecurityContext securityContext) {
-
-        //TODO Implement fetching SessionToken from db by calling security context and return 404 not found or 200 ok.
-//        SessionController.getInstance().logout(securityContext.getUserPrincipal().getName());
-        return Response.noContent().build();
+        return SessionController.getInstance().logout(securityContext.getUserPrincipal().getName());
     }
 
     /////////////////////////
@@ -68,17 +63,15 @@ public class ApiController {
     @POST
     @Secured({UserRights.postUser})
     @Path("/user")
-    public Response postUser(@Context SecurityContext securityContext,
-                             @NotNull Users user) {
-        //TODO Implement creating new user logic/registration.
-//        UserController.getInstance().createUser(securityContext.getUserPrincipal().getName(),user);
+    public Response postUser(@NotNull RegistrationRequest registrationRequest) {
+        UserController.getInstance().createUser(registrationRequest);
         return Response.noContent().build();
     }
 
     @PUT
     @Secured({UserRights.putUser})
     @Path("/user")
-    public Response putUser(@Context SecurityContext securityContextt,
+    public Response putUser(@Context SecurityContext securityContext,
                             @NotNull Users user) {
         //TODO Implement updating user logic.
 //        UserController.getInstance().updateUser(securityContext.getUserPrincipal().getName(),user);

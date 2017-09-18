@@ -1,5 +1,7 @@
 package com.contractor.filter;
 
+import com.contractor.model.dao.SessionTokenDao;
+import com.contractor.model.entity.SessionToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,10 +45,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         try {
 
             // Validate the token
-            //TODO Implement TokenSession.findByToken(token);
-            final TokenSession tokenSession = null;
+            final SessionToken sessionToken = new SessionTokenDao().getSessionTokenBySessionTokenValue(token);
 
-            if (null == tokenSession) {
+            if (null == sessionToken) {
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
                 return;
             }
@@ -60,9 +61,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
                         @Override
                         public String getName() {
-                            //TODO uncomment when token session table ready
-//                            return tokenSession.getUserId();
-                            return null;
+                            return String.valueOf(sessionToken.getUserId());
                         }
                     };
                 }

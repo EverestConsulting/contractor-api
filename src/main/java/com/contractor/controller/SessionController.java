@@ -1,7 +1,17 @@
 package com.contractor.controller;
 
+import com.contractor.api.ResponseFactory;
+import com.contractor.model.dao.SessionTokenDao;
+import com.contractor.model.dao.UsersDao;
+import com.contractor.model.entity.SessionToken;
+import com.contractor.model.entity.Users;
+import com.contractor.model.request.LoginRequest;
+import com.contractor.model.response.LoginResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.core.Response;
+
 
 /**
  * Singleton class which handles business logic for handling session operations (login/logout).
@@ -31,12 +41,31 @@ public class SessionController {
         return INSTANCE;
     }
 
-    public Object login() {
-        return null;
+    public Response login(LoginRequest loginRequest) {
+        UsersDao usersDao = new UsersDao();
+        Users user = usersDao.findByEmail(loginRequest.getEmail());
+        if (usersDao.userIsValid(loginRequest.getEmail(), loginRequest.getPassword(), user)) {
+
+            SessionTokenDao sessionTokenDao = new SessionTokenDao();
+            SessionToken sessionToken = sessionTokenDao.createSessionToken(user.getUserId());
+
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setToken(sessionToken.getSessionToken());
+
+            return ResponseFactory.getSuccess200(loginResponse);
+        }
+
+        return ResponseFactory.getNotFound404("Couldn't find user", "Email or password not correct");
     }
 
-    public Object logout() {
-        return null;
+    public Response logout(String userId) {
+
+        Users user = new UsersDao().fetchUserById(Long.valueOf(userId));
+        if (null != user) {
+            new SessionTokenDao().deleteSessionTokenByUserId(user.getUserId());
+        }
+
+        return ResponseFactory.getSuccess200();
     }
 
 }
