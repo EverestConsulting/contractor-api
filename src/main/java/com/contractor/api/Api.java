@@ -1,5 +1,7 @@
 package com.contractor.api;
 
+import com.contractor.api.v1.ApiResources;
+
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import java.util.HashSet;
@@ -15,7 +17,7 @@ public class Api extends Application {
     private Set<Object> singletons = new HashSet<>(0);
 
     public Api() {
-        singletons.add(new ApiController());
+        singletons.add(new ApiResources());
     }
 
     @Override

@@ -3,7 +3,10 @@ package com.contractor;
 
 import com.contractor.model.dao.UserRightDao;
 import com.contractor.model.dao.UserRoleDao;
-import com.contractor.model.dao.UsersDao;
+import com.contractor.model.dao.impl.RightDao;
+import com.contractor.model.dao.impl.RoleDao;
+import com.contractor.model.dao.impl.SessionDao;
+import com.contractor.model.dao.impl.UserDao;
 import com.contractor.model.entity.UserRight;
 import com.contractor.model.entity.UserRole;
 
@@ -25,8 +28,18 @@ public class App {
     private Map<Integer, UserRole> userRoles;
     private Map<Integer, UserRight> userRights;
 
+    private RightDao userRightDao;
+    private RoleDao userRoleDao;
+    private SessionDao sessionTokenDao;
+    private UserDao userDao;
+
     private App() {
         //singleton
+
+        userRightDao = new RightDao();
+        userRoleDao = new RoleDao();
+        sessionTokenDao = new SessionDao();
+        userDao = new UserDao();
         LOG.info(String.format("%s initialized!!!", App.class.getSimpleName()));
     }
 
@@ -46,7 +59,7 @@ public class App {
     /**
      * @return App instance
      */
-    public static App getInstance() {
+    public static App instance() {
         if (null == INSTANCE) {
             LOG.error(String.format("%s not properly initialized!!!", App.class.getSimpleName()));
         }
@@ -109,5 +122,37 @@ public class App {
      */
     public Map<Integer, UserRight> getUserRights() {
         return userRights;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public RightDao getUserRightDao() {
+        return userRightDao;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public RoleDao getUserRoleDao() {
+        return userRoleDao;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public SessionDao getSessionTokenDao() {
+        return sessionTokenDao;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public UserDao getUserDao() {
+        return userDao;
     }
 }

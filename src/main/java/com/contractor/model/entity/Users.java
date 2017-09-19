@@ -14,9 +14,8 @@ public class Users {
     private String streetName;
     private Short streetNumber;
     private String country;
-    private Short zipCode;
+    private Integer zipCode;
     private String email;
-    private short userRoleId;
     private String phoneNumber;
     private Timestamp created;
     private Timestamp lastModified;
@@ -107,11 +106,11 @@ public class Users {
 
     @Basic
     @Column(name = "zip_code", nullable = true)
-    public Short getZipCode() {
+    public Integer getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(Short zipCode) {
+    public void setZipCode(Integer zipCode) {
         this.zipCode = zipCode;
     }
 
@@ -123,16 +122,6 @@ public class Users {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Basic
-    @Column(name = "user_role_id", nullable = false)
-    public short getUserRoleId() {
-        return userRoleId;
-    }
-
-    public void setUserRoleId(short userRoleId) {
-        this.userRoleId = userRoleId;
     }
 
     @Basic
@@ -173,7 +162,6 @@ public class Users {
         Users users = (Users) o;
 
         if (userId != users.userId) return false;
-        if (userRoleId != users.userRoleId) return false;
         if (userName != null ? !userName.equals(users.userName) : users.userName != null) return false;
         if (firstName != null ? !firstName.equals(users.firstName) : users.firstName != null) return false;
         if (lastName != null ? !lastName.equals(users.lastName) : users.lastName != null) return false;
@@ -202,7 +190,6 @@ public class Users {
         result = 31 * result + (country != null ? country.hashCode() : 0);
         result = 31 * result + (zipCode != null ? zipCode.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (int) userRoleId;
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + (created != null ? created.hashCode() : 0);
         result = 31 * result + (lastModified != null ? lastModified.hashCode() : 0);

@@ -8,10 +8,12 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 /**
  * Created by dpecanac on 29.8.2017.
  */
+@WebListener
 public class AppContextListener implements ServletContextListener {
     private static final Logger LOG = LoggerFactory.getLogger(AppContextListener.class.getSimpleName());
 

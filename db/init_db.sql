@@ -29,14 +29,6 @@ CREATE TABLE user_right (
   PRIMARY KEY (user_right_id)
 );
 
---ERROR:  foreign key constraint "user_role_user_right_fkey" cannot be implemented
---DETAIL:  Key columns "user_right" and "user_right_id" are of incompatible types: integer[] and integer.
---CREATE TABLE user_role (
---user_role_id SERIAL,
---user_role_name character varying(20),
---user_right integer [] references user_right (user_right_id),
---PRIMARY KEY(user_role_id)
---);
 CREATE TABLE user_role (
   user_role_id   SMALLSERIAL,
   user_role_name CHARACTER VARYING(20) NOT NULL,
@@ -55,7 +47,7 @@ CREATE TABLE users (
   street_name   CHARACTER VARYING(255) NOT NULL,
   street_number SMALLINT,
   country       CHARACTER VARYING(255) NOT NULL,
-  zip_code      SMALLINT,
+  zip_code      INTEGER,
   email         CHARACTER VARYING(255) NOT NULL,
   user_role_id  SMALLINT               NOT NULL REFERENCES user_role (user_role_id),
   phone_number  CHARACTER VARYING(30)  NOT NULL,
@@ -232,3 +224,22 @@ INSERT INTO pricing (price, price_currency, price_unit, pricing_plan_id, job_typ
        b.job_type_id
      FROM pricing_plan AS a, job_type AS b
      WHERE a.pricing_plan_title = 'weekend') AS c;
+
+INSERT INTO users (user_name, first_name, last_name, password, street_name, street_number, country, zip_code, email, user_role_id, phone_number, created, last_modified)
+  SELECT
+    'everest',
+    'Everest',
+    'Consulting',
+    '$2a$04$At.7B49IFotG0mzWtwSb6.ZXLF7l9fyDiDyO4USrTQy9tdaV55esy',
+    'Behdzeta Mutevelica',
+    2,
+    'Bosnia & Herzegovina',
+    71000,
+    'damir@everestconsulting.ba',
+    a.user_role_id,
+    '+38761222242',
+    now(),
+    now()
+  FROM (SELECT user_role_id
+        FROM user_role
+        WHERE user_role_name = 'administrator') AS a;

@@ -19,6 +19,7 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.security.Principal;
 import java.util.*;
 
 @Secured
@@ -43,7 +44,9 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         List<UserRights> methodRights = extractRights(resourceMethod);
 
         try {
-            Users user = new UsersDao().fetchUserById(requestContext.getSecurityContext().getUserPrincipal().getName());
+            Principal principal = requestContext.getSecurityContext().getUserPrincipal();
+            String principalName = principal.getName();
+            Users user = new UsersDao().fetchUserById(Long.valueOf(principalName));
 
             if (null == user) {
                 throw new SecurityException("Could not find user");
@@ -79,12 +82,12 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         // Throw an Exception if the user has not permission to execute the method
         boolean hasRight = false;
 
-        Set<Integer> rightsByCurrentUserRole = App.getInstance().getRolesAndRights().get((int) user.getUserRoleId());
+        Set<Integer> rightsByCurrentUserRole = App.instance().getRolesAndRights().get((int) user.getUserRoleByUserRoleId().getUserRoleId());
 
         Set<UserRights> userRights = new HashSet<>(0);
 
         for (Integer userRightId : rightsByCurrentUserRole) {
-            UserRight userRight = App.getInstance().getUserRights().get(userRightId);
+            UserRight userRight = App.instance().getUserRights().get(userRightId);
             if (EnumUtils.isValidEnum(UserRights.class, userRight.getUserRight())) {
                 userRights.add(UserRights.valueOf(userRight.getUserRight()));
             }

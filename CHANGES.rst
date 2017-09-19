@@ -24,6 +24,10 @@ TODO
 unreleased
 ==========
 
+REST API Logic
+
+    - Hibernate refactoring
+    - REST Api access points refactoring.
 
 REST API Logic
 

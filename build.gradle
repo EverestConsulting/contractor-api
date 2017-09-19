@@ -1,9 +1,23 @@
 group 'contractor'
-version '0.1'
 
+Properties properties = new Properties()
+properties.load(new FileInputStream("gradle.properties"))
+
+// Support for Maven
+apply plugin: 'maven'
+
+// Apply the java plugin to add support for Java
 apply plugin: 'java'
 
+// Apply the war plugin to add support for Java Web Applications
+apply plugin: 'war'
+
+// Support for IntelliJ
+apply plugin: 'idea'
+
 sourceCompatibility = 1.8
+
+version = properties.getProperty("CURRENT_API_VERSION")
 
 repositories {
     mavenCentral()
@@ -13,15 +27,16 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    providedCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
 
     // https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-jaxrs
-    compile 'org.jboss.resteasy:resteasy-jaxrs:3.0.13.Final'
-    compile 'org.jboss.resteasy:resteasy-validator-provider-11:3.0.14.Final'
-    compile 'org.jboss.resteasy:resteasy-multipart-provider:3.0.14.Final'
+    providedCompile 'org.jboss.resteasy:resteasy-jaxrs:3.0.13.Final'
+    providedCompile 'org.jboss.resteasy:resteasy-validator-provider-11:3.0.14.Final'
+    providedCompile 'org.jboss.resteasy:resteasy-multipart-provider:3.0.14.Final'
 
+    providedCompile 'javax.el:javax.el-api:3.0.0'
     // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
-    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
 
     compile 'org.apache.commons:commons-lang3:3.4'
 
@@ -35,5 +50,16 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     compile group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
+}
 
+task deployLocal(dependsOn: assemble, type: Copy) {
+    from "build/libs/contractor-api-${version}.war"
+    into "$System.env.JBOSS_HOME/standalone/deployments"
+    rename { String fileName ->
+        fileName.replace("-${version}", "")
+    }
+}
+
+task undeployLocal(type: Delete) {
+    "$System.env.JBOSS_HOME/standalone/deployments/contractor-api.war"
 }
