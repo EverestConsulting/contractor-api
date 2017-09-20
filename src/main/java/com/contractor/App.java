@@ -1,21 +1,14 @@
 package com.contractor;
 
 
-import com.contractor.model.dao.UserRightDao;
-import com.contractor.model.dao.UserRoleDao;
-import com.contractor.model.dao.impl.RightDao;
-import com.contractor.model.dao.impl.RoleDao;
-import com.contractor.model.dao.impl.SessionDao;
-import com.contractor.model.dao.impl.UserDao;
-import com.contractor.model.entity.UserRight;
-import com.contractor.model.entity.UserRole;
+import com.contractor.model.dao.*;
 
+import com.contractor.model.entity.UserRole;
+import com.contractor.model.enums.UserRights;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Singleton class which handles constants fetched from db used across the app (ex. rights and roles).
@@ -24,22 +17,33 @@ public class App {
     private static final Logger LOG = LoggerFactory.getLogger(App.class.getSimpleName());
     private static App INSTANCE;
 
-    private Map<Integer, Set<Integer>> rolesAndRights;
-    private Map<Integer, UserRole> userRoles;
-    private Map<Integer, UserRight> userRights;
+    private Map<Integer, List<UserRights>> rolesAndRights;
+    private List<UserRole> userRoles;
 
-    private RightDao userRightDao;
-    private RoleDao userRoleDao;
-    private SessionDao sessionTokenDao;
+    private JobDao jobDao;
+    private JobStatusDao jobStatusDao;
+    private JobTypeDao jobTypeDao;
+    private PricingDao pricingDao;
+    private PricingPlanDao pricingPlanDao;
+    private UserRoleDao userRoleDao;
+    private SessionTokenDao sessionTokenDao;
     private UserDao userDao;
 
     private App() {
         //singleton
 
-        userRightDao = new RightDao();
-        userRoleDao = new RoleDao();
-        sessionTokenDao = new SessionDao();
+        //instantiate data access singleton classes
+        jobDao = new JobDao();
+        jobStatusDao = new JobStatusDao();
+        jobTypeDao = new JobTypeDao();
+        pricingDao = new PricingDao();
+        pricingPlanDao = new PricingPlanDao();
+        userRoleDao = new UserRoleDao();
+        sessionTokenDao = new SessionTokenDao();
         userDao = new UserDao();
+
+        //load runtime variables
+        loadConfig();
         LOG.info(String.format("%s initialized!!!", App.class.getSimpleName()));
     }
 
@@ -71,24 +75,15 @@ public class App {
      */
     private void loadConfig() {
         rolesAndRights = new HashMap<>(0);
-        userRoles = new HashMap<>(0);
-        userRights = new HashMap<>(0);
+        userRoles = userRoleDao.findAll();
 
-        userRoles = new UserRoleDao().fetchUserRoles();
-        userRights = new UserRightDao().fetchUserRights();
-
-        if (null == userRoles) {
+        if (null == userRoles || userRoles.size() <= 0) {
             LOG.error("User Roles empty");
             return;
         }
 
-        if (null == userRights) {
-            LOG.error("User Rights empty");
-            return;
-        }
-
-        for (Map.Entry<Integer, UserRole> roleEntry : userRoles.entrySet()) {
-            rolesAndRights.put(roleEntry.getKey(), (Set<Integer>) roleEntry.getValue().getUserRight());
+        for (UserRole role : userRoles) {
+            rolesAndRights.put(role.getUserRoleId(), Arrays.asList(UserRights.values()));
         }
     }
 
@@ -98,7 +93,6 @@ public class App {
     public void reloadConfig() {
         rolesAndRights.clear();
         userRoles.clear();
-        userRights.clear();
 
         loadConfig();
     }
@@ -106,50 +100,54 @@ public class App {
     /**
      * @return Map with user rights and roles.
      */
-    public Map<Integer, Set<Integer>> getRolesAndRights() {
+    public Map<Integer, List<UserRights>> getRolesAndRights() {
         return rolesAndRights;
     }
 
     /**
      * @return Map with user roles
      */
-    public Map<Integer, UserRole> getUserRoles() {
+    public List<UserRole> getUserRoles() {
         return userRoles;
     }
 
-    /**
-     * @return Map with user rights
-     */
-    public Map<Integer, UserRight> getUserRights() {
-        return userRights;
+
+    public JobDao getJobDao() {
+        return jobDao;
     }
 
-    /**
-     *
-     * @return
-     */
-    public RightDao getUserRightDao() {
-        return userRightDao;
+    public JobStatusDao getJobStatusDao() {
+        return jobStatusDao;
     }
 
+    public JobTypeDao getJobTypeDao() {
+        return jobTypeDao;
+    }
+
+    public PricingDao getPricingDao() {
+        return pricingDao;
+    }
+
+    public PricingPlanDao getPricingPlanDao() {
+        return pricingPlanDao;
+    }
+
+
     /**
-     *
      * @return
      */
-    public RoleDao getUserRoleDao() {
+    public UserRoleDao getUserRoleDao() {
         return userRoleDao;
     }
 
     /**
-     *
      * @return
      */
-    public SessionDao getSessionTokenDao() {
+    public SessionTokenDao getSessionTokenDao() {
         return sessionTokenDao;
     }
 
     /**
-     *
      * @return
      */
     public UserDao getUserDao() {

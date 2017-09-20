@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.contractor.model.entity.Job" table="job" schema="public" catalog="contractor">
+        <id name="jobId">
+            <column name="job_id" sql-type="bigint"/>
+            <generator class="identity"/>
+        </id>
+        <property name="jobTypeId">
+            <column name="job_type_id" sql-type="integer"/>
+        </property>
+        <property name="jobLocation">
+            <column name="job_location" sql-type="varchar(100)" length="100"/>
+        </property>
+        <property name="jobCreatedByUserId">
+            <column name="job_created_by_user_id" sql-type="integer"/>
+        </property>
+        <property name="jobAssignedToUserId">
+            <column name="job_assigned_to_user_id" sql-type="integer" not-null="true"/>
+        </property>
+        <property name="jobPricingId">
+            <column name="job_pricing_id" sql-type="integer"/>
+        </property>
+        <property name="jobNotes">
+            <column name="job_notes" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="jobCreated">
+            <column name="job_created" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="jobAssigned">
+            <column name="job_assigned" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="jobCompleted">
+            <column name="job_completed" sql-type="timestamp" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

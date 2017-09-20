@@ -1,13 +1,16 @@
 package com.contractor.api.v1;
 
 
+import com.contractor.App;
 import com.contractor.api.ResponseFactory;
 import com.contractor.controller.SessionController;
 
 import com.contractor.filter.Secured;
 
+import com.contractor.model.entity.*;
 import com.contractor.model.enums.UserRights;
 import com.contractor.model.request.LoginRequest;
+import com.contractor.model.response.LoginResponse;
 import com.contractor.model.response.VersionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +21,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.util.List;
 
 /**
  * Handles the RESTFull API interface
  * All CRUD entry points are handled here.
  */
-//@Path("v1")
+@Path("v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ApiResources {
@@ -46,11 +50,53 @@ public class ApiResources {
     }
 
     @DELETE
-    @Secured({UserRights.logout})
+    @Secured(UserRights.logout)
     @Path("/logout")
     public Response logout(@Context SecurityContext securityContext) {
-        return SessionController.getInstance().logout(securityContext.getUserPrincipal().getName());
+        return SessionController.getInstance().logout(Integer.valueOf(securityContext.getUserPrincipal().getName()));
     }
 
+    @POST
+    @Path("/password-reset")
+    public Response passwordReset(@NotNull LoginResponse loginResponse) {
+        return ResponseFactory.getNotImplemented501();
+    }
+
+    @GET
+    @Path("/job-type")
+    public Response getJobTypes() {
+        List<JobType> jobTypeList = App.instance().getJobTypeDao().findAll();
+
+        return null == jobTypeList ?
+                ResponseFactory.getNotImplemented501()
+                : ResponseFactory.getSuccess200(jobTypeList);
+    }
+
+    @GET
+    @Path("/job-status")
+    public Response getJobStatus(@Context SecurityContext securityContext) {
+        List<JobStatus> jobStatusList = App.instance().getJobStatusDao().findAll();
+        return null == jobStatusList ?
+                ResponseFactory.getNotImplemented501()
+                : ResponseFactory.getSuccess200(jobStatusList);
+    }
+
+    @GET
+    @Path("/pricing-plan")
+    public Response getPricingPlan() {
+        List<PricingPlan> pricingPlanList = App.instance().getPricingPlanDao().findAll();
+        return null == pricingPlanList ?
+                ResponseFactory.getNotImplemented501()
+                : ResponseFactory.getSuccess200(pricingPlanList);
+    }
+
+    @GET
+    @Path("/pricing")
+    public Response getPricing() {
+        List<Pricing> pricingList = App.instance().getPricingDao().findAll();
+        return null == pricingList ?
+                ResponseFactory.getNotImplemented501()
+                : ResponseFactory.getSuccess200(pricingList);
+    }
 
 }

@@ -12,8 +12,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.sql.Date;
+import java.sql.Timestamp;
 
-@Path("/user")
+@Path("v1/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
@@ -24,27 +26,20 @@ public class UserResource {
     @GET
     @Secured({UserRights.getUser})
     public Response getUser(@Context SecurityContext securityContext) {
-        //TODO Implement passing id as user/id. Implement fetching user data by user id from security context.
-//        UserController.instance().fetchUser(securityContext.getUserPrincipal().getName());
-        return Response.noContent().build();
+        return UserController.instance().fetchUser(Integer.valueOf(securityContext.getUserPrincipal().getName()));
     }
 
     @POST
-    @Secured({UserRights.postUser})
     public Response postUser(@NotNull RegistrationRequest registrationRequest) {
-        UserController.getInstance().createUser(registrationRequest);
-        return Response.noContent().build();
+        return UserController.instance().createUser(registrationRequest);
     }
 
     @PUT
     @Secured({UserRights.putUser})
-    @Path("/{userId}")
     public Response putUser(@Context SecurityContext securityContext,
-                            @NotNull @PathParam("userId") Integer userId,
                             @NotNull Users user) {
-        //TODO Implement updating user logic.
-//        UserController.instance().updateUser(securityContext.getUserPrincipal().getName(),user);
-        return Response.noContent().build();
+        user.setLastModified(new Timestamp(System.currentTimeMillis()));
+        return UserController.instance().updateUser(user);
     }
 
     @DELETE
@@ -52,8 +47,6 @@ public class UserResource {
     @Path("/{userId}")
     public Response deleteUser(@Context SecurityContext securityContext,
                                @NotNull @PathParam("userId") Integer id) {
-        //TODO Implement deactivating/deleting user logic.
-//        UserController.instance().deleteUser(securityContext.getUserPrincipal().getName(),id);
-        return Response.noContent().build();
+        return UserController.instance().deleteUser(id);
     }
 }

@@ -1,28 +1,26 @@
 package com.contractor.model.entity;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigInteger;
-import java.util.Collection;
 
 @Entity
 public class Pricing {
-    private short pricingId;
+    private Integer pricingId;
     private BigInteger price;
     private String priceCurrency;
     private String priceUnit;
-    private int pricingPlanId;
-    private int jobTypeId;
-    private Collection<Jobs> jobsByPricingId;
-    private PricingPlan pricingPlanByPricingPlanId;
-    private JobType jobTypeByJobTypeId;
+    private Integer jobTypeId;
 
     @Id
     @Column(name = "pricing_id", nullable = false)
-    public short getPricingId() {
+    public Integer getPricingId() {
         return pricingId;
     }
 
-    public void setPricingId(short pricingId) {
+    public void setPricingId(Integer pricingId) {
         this.pricingId = pricingId;
     }
 
@@ -57,22 +55,12 @@ public class Pricing {
     }
 
     @Basic
-    @Column(name = "pricing_plan_id", nullable = false)
-    public int getPricingPlanId() {
-        return pricingPlanId;
-    }
-
-    public void setPricingPlanId(int pricingPlanId) {
-        this.pricingPlanId = pricingPlanId;
-    }
-
-    @Basic
     @Column(name = "job_type_id", nullable = false)
-    public int getJobTypeId() {
+    public Integer getJobTypeId() {
         return jobTypeId;
     }
 
-    public void setJobTypeId(int jobTypeId) {
+    public void setJobTypeId(Integer jobTypeId) {
         this.jobTypeId = jobTypeId;
     }
 
@@ -83,54 +71,23 @@ public class Pricing {
 
         Pricing pricing = (Pricing) o;
 
-        if (pricingId != pricing.pricingId) return false;
-        if (pricingPlanId != pricing.pricingPlanId) return false;
-        if (jobTypeId != pricing.jobTypeId) return false;
+        if (pricingId != null ? !pricingId.equals(pricing.pricingId) : pricing.pricingId != null) return false;
         if (price != null ? !price.equals(pricing.price) : pricing.price != null) return false;
         if (priceCurrency != null ? !priceCurrency.equals(pricing.priceCurrency) : pricing.priceCurrency != null)
             return false;
         if (priceUnit != null ? !priceUnit.equals(pricing.priceUnit) : pricing.priceUnit != null) return false;
+        if (jobTypeId != null ? !jobTypeId.equals(pricing.jobTypeId) : pricing.jobTypeId != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) pricingId;
+        int result = pricingId != null ? pricingId.hashCode() : 0;
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (priceCurrency != null ? priceCurrency.hashCode() : 0);
         result = 31 * result + (priceUnit != null ? priceUnit.hashCode() : 0);
-        result = 31 * result + pricingPlanId;
-        result = 31 * result + jobTypeId;
+        result = 31 * result + (jobTypeId != null ? jobTypeId.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany(mappedBy = "pricingByJobPricingId")
-    public Collection<Jobs> getJobsByPricingId() {
-        return jobsByPricingId;
-    }
-
-    public void setJobsByPricingId(Collection<Jobs> jobsByPricingId) {
-        this.jobsByPricingId = jobsByPricingId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "pricing_plan_id", referencedColumnName = "pricing_plan_id", nullable = false)
-    public PricingPlan getPricingPlanByPricingPlanId() {
-        return pricingPlanByPricingPlanId;
-    }
-
-    public void setPricingPlanByPricingPlanId(PricingPlan pricingPlanByPricingPlanId) {
-        this.pricingPlanByPricingPlanId = pricingPlanByPricingPlanId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "job_type_id", referencedColumnName = "job_type_id", nullable = false)
-    public JobType getJobTypeByJobTypeId() {
-        return jobTypeByJobTypeId;
-    }
-
-    public void setJobTypeByJobTypeId(JobType jobTypeByJobTypeId) {
-        this.jobTypeByJobTypeId = jobTypeByJobTypeId;
     }
 }

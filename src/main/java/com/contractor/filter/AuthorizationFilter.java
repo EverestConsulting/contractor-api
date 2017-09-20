@@ -1,11 +1,8 @@
 package com.contractor.filter;
 
 import com.contractor.App;
-import com.contractor.model.dao.UsersDao;
-import com.contractor.model.entity.UserRight;
 import com.contractor.model.entity.Users;
 import com.contractor.model.enums.UserRights;
-import org.apache.commons.lang3.EnumUtils;
 
 import javax.annotation.Priority;
 import javax.validation.constraints.NotNull;
@@ -19,7 +16,6 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
-import java.security.Principal;
 import java.util.*;
 
 @Secured
@@ -44,9 +40,8 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         List<UserRights> methodRights = extractRights(resourceMethod);
 
         try {
-            Principal principal = requestContext.getSecurityContext().getUserPrincipal();
-            String principalName = principal.getName();
-            Users user = new UsersDao().fetchUserById(Long.valueOf(principalName));
+//            Users user = new UsersDao().fetchUserById(Long.valueOf(principalName));
+            Users user = App.instance().getUserDao().get(Integer.valueOf(requestContext.getSecurityContext().getUserPrincipal().getName()));
 
             if (null == user) {
                 throw new SecurityException("Could not find user");
@@ -82,16 +77,7 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         // Throw an Exception if the user has not permission to execute the method
         boolean hasRight = false;
 
-        Set<Integer> rightsByCurrentUserRole = App.instance().getRolesAndRights().get((int) user.getUserRoleByUserRoleId().getUserRoleId());
-
-        Set<UserRights> userRights = new HashSet<>(0);
-
-        for (Integer userRightId : rightsByCurrentUserRole) {
-            UserRight userRight = App.instance().getUserRights().get(userRightId);
-            if (EnumUtils.isValidEnum(UserRights.class, userRight.getUserRight())) {
-                userRights.add(UserRights.valueOf(userRight.getUserRight()));
-            }
-        }
+        List<UserRights> userRights = App.instance().getRolesAndRights().get(user.getUserRoleId());
 
         //match user rights with required method rights
         for (UserRights allowedRight : allowedRights) {

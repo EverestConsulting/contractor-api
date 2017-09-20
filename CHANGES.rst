@@ -5,9 +5,6 @@ Changes for contractor API
 TODO
 ====
 
-    - REST API Logic
-        - Implement REST Api logic for created models.
-
     - Business Logic
     	- DB restructuring based on business models and process.
     	- Implement fetching user from db base on LoginRequest. If no user matched return Not Found. If found create new token session and return 200 ok with LoginResponse.
@@ -23,6 +20,13 @@ TODO
 
 unreleased
 ==========
+
+- REST API Logic
+    - Implement REST Api logic for created models.
+
+Hibernate
+
+    - Hibernate refactoring
 
 REST API Logic
 

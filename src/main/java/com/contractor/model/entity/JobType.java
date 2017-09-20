@@ -1,24 +1,21 @@
 package com.contractor.model.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 @Table(name = "job_type", schema = "public", catalog = "contractor")
 public class JobType {
-    private short jobTypeId;
+    private Integer jobTypeId;
     private String jobTypeTitle;
     private String jobTypeDescription;
-    private Collection<Jobs> jobsByJobTypeId;
-    private Collection<Pricing> pricingsByJobTypeId;
 
     @Id
     @Column(name = "job_type_id", nullable = false)
-    public short getJobTypeId() {
+    public Integer getJobTypeId() {
         return jobTypeId;
     }
 
-    public void setJobTypeId(short jobTypeId) {
+    public void setJobTypeId(Integer jobTypeId) {
         this.jobTypeId = jobTypeId;
     }
 
@@ -49,7 +46,7 @@ public class JobType {
 
         JobType jobType = (JobType) o;
 
-        if (jobTypeId != jobType.jobTypeId) return false;
+        if (jobTypeId != null ? !jobTypeId.equals(jobType.jobTypeId) : jobType.jobTypeId != null) return false;
         if (jobTypeTitle != null ? !jobTypeTitle.equals(jobType.jobTypeTitle) : jobType.jobTypeTitle != null)
             return false;
         if (jobTypeDescription != null ? !jobTypeDescription.equals(jobType.jobTypeDescription) : jobType.jobTypeDescription != null)
@@ -60,27 +57,9 @@ public class JobType {
 
     @Override
     public int hashCode() {
-        int result = (int) jobTypeId;
+        int result = jobTypeId != null ? jobTypeId.hashCode() : 0;
         result = 31 * result + (jobTypeTitle != null ? jobTypeTitle.hashCode() : 0);
         result = 31 * result + (jobTypeDescription != null ? jobTypeDescription.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany(mappedBy = "jobTypeByJobTypeId")
-    public Collection<Jobs> getJobsByJobTypeId() {
-        return jobsByJobTypeId;
-    }
-
-    public void setJobsByJobTypeId(Collection<Jobs> jobsByJobTypeId) {
-        this.jobsByJobTypeId = jobsByJobTypeId;
-    }
-
-    @OneToMany(mappedBy = "jobTypeByJobTypeId")
-    public Collection<Pricing> getPricingsByJobTypeId() {
-        return pricingsByJobTypeId;
-    }
-
-    public void setPricingsByJobTypeId(Collection<Pricing> pricingsByJobTypeId) {
-        this.pricingsByJobTypeId = pricingsByJobTypeId;
     }
 }

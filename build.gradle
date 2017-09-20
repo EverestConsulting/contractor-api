@@ -61,5 +61,5 @@ task deployLocal(dependsOn: assemble, type: Copy) {
 }
 
 task undeployLocal(type: Delete) {
-    "$System.env.JBOSS_HOME/standalone/deployments/contractor-api.war"
+    "$System.env.JBOSS_HOME/standalone/deployments/contractor-api.war*"
 }

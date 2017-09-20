@@ -1,23 +1,21 @@
 package com.contractor.model.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 @Table(name = "pricing_plan", schema = "public", catalog = "contractor")
 public class PricingPlan {
-    private short pricingPlanId;
+    private Integer pricingPlanId;
     private String pricingPlanTitle;
     private String pricingPlanDescription;
-    private Collection<Pricing> pricingsByPricingPlanId;
 
     @Id
     @Column(name = "pricing_plan_id", nullable = false)
-    public short getPricingPlanId() {
+    public Integer getPricingPlanId() {
         return pricingPlanId;
     }
 
-    public void setPricingPlanId(short pricingPlanId) {
+    public void setPricingPlanId(Integer pricingPlanId) {
         this.pricingPlanId = pricingPlanId;
     }
 
@@ -48,7 +46,8 @@ public class PricingPlan {
 
         PricingPlan that = (PricingPlan) o;
 
-        if (pricingPlanId != that.pricingPlanId) return false;
+        if (pricingPlanId != null ? !pricingPlanId.equals(that.pricingPlanId) : that.pricingPlanId != null)
+            return false;
         if (pricingPlanTitle != null ? !pricingPlanTitle.equals(that.pricingPlanTitle) : that.pricingPlanTitle != null)
             return false;
         if (pricingPlanDescription != null ? !pricingPlanDescription.equals(that.pricingPlanDescription) : that.pricingPlanDescription != null)
@@ -59,18 +58,9 @@ public class PricingPlan {
 
     @Override
     public int hashCode() {
-        int result = (int) pricingPlanId;
+        int result = pricingPlanId != null ? pricingPlanId.hashCode() : 0;
         result = 31 * result + (pricingPlanTitle != null ? pricingPlanTitle.hashCode() : 0);
         result = 31 * result + (pricingPlanDescription != null ? pricingPlanDescription.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany(mappedBy = "pricingPlanByPricingPlanId")
-    public Collection<Pricing> getPricingsByPricingPlanId() {
-        return pricingsByPricingPlanId;
-    }
-
-    public void setPricingsByPricingPlanId(Collection<Pricing> pricingsByPricingPlanId) {
-        this.pricingsByPricingPlanId = pricingsByPricingPlanId;
     }
 }

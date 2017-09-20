@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.contractor.model.entity.Pricing" table="pricing" schema="public" catalog="contractor">
+        <id name="pricingId">
+            <column name="pricing_id" sql-type="integer"/>
+            <generator class="identity"/>
+        </id>
+        <property name="price">
+            <column name="price" sql-type="numeric" precision="-1"/>
+        </property>
+        <property name="priceCurrency">
+            <column name="price_currency" sql-type="varchar(15)" length="15"/>
+        </property>
+        <property name="priceUnit">
+            <column name="price_unit" sql-type="varchar(5)" length="5"/>
+        </property>
+        <property name="jobTypeId">
+            <column name="job_type_id" sql-type="integer"/>
+        </property>
+    </class>
+</hibernate-mapping>

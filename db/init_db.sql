@@ -11,54 +11,56 @@
 --        CONNECTION LIMIT = -1;
 --
 -- COMMENT ON DATABASE contractor
---   IS 'Contractor app test db';
+--   IS 'Contractor app db';
+
 
 DROP TABLE IF EXISTS session_token;
-DROP TABLE IF EXISTS jobs;
+DROP TABLE IF EXISTS job;
 DROP TABLE IF EXISTS pricing;
 DROP TABLE IF EXISTS pricing_plan;
 DROP TABLE IF EXISTS job_type;
+DROP TABLE IF EXISTS job_status;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS user_role;
-DROP TABLE IF EXISTS user_right;
-
-CREATE TABLE user_right (
-  user_right_id SMALLSERIAL,
-  user_right    CHARACTER VARYING(20) NOT NULL,
-
-  PRIMARY KEY (user_right_id)
-);
 
 CREATE TABLE user_role (
-  user_role_id   SMALLSERIAL,
+  user_role_id   SERIAL,
   user_role_name CHARACTER VARYING(20) NOT NULL,
-  user_right     SMALLINT []           NOT NULL,
 
   PRIMARY KEY (user_role_id)
 );
 
-
 CREATE TABLE users (
-  user_id       BIGSERIAL,
+  user_id       SERIAL,
   user_name     CHARACTER VARYING(255) NOT NULL,
   first_name    CHARACTER VARYING(255) NOT NULL,
   last_name     CHARACTER VARYING(255) NOT NULL,
   password      CHARACTER VARYING(255) NOT NULL,
   street_name   CHARACTER VARYING(255) NOT NULL,
-  street_number SMALLINT,
+  street_number CHARACTER VARYING(10)  NOT NULL,
   country       CHARACTER VARYING(255) NOT NULL,
   zip_code      INTEGER,
   email         CHARACTER VARYING(255) NOT NULL,
-  user_role_id  SMALLINT               NOT NULL REFERENCES user_role (user_role_id),
+  user_role_id  INTEGER                NOT NULL,
   phone_number  CHARACTER VARYING(30)  NOT NULL,
-  created       TIMESTAMP,
-  last_modified TIMESTAMP,
+  active        BOOLEAN                NOT NULL DEFAULT TRUE,
+  created       TIMESTAMP              NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_modified TIMESTAMP              NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-  PRIMARY KEY (user_id)
+  PRIMARY KEY (user_id),
+  FOREIGN KEY (user_role_id) REFERENCES user_role (user_role_id) ON UPDATE CASCADE,
+  UNIQUE (email)
+);
+
+CREATE TABLE job_status (
+  job_status_id   SERIAL,
+  job_status_name VARCHAR(20),
+
+  PRIMARY KEY (job_status_id)
 );
 
 CREATE TABLE job_type (
-  job_type_id          SMALLSERIAL,
+  job_type_id          SERIAL,
   job_type_title       CHARACTER VARYING(30)  NOT NULL,
   job_type_description CHARACTER VARYING(255) NOT NULL,
 
@@ -66,7 +68,7 @@ CREATE TABLE job_type (
 );
 
 CREATE TABLE pricing_plan (
-  pricing_plan_id          SMALLSERIAL,
+  pricing_plan_id          SERIAL,
   pricing_plan_title       CHARACTER VARYING(30)  NOT NULL,
   pricing_plan_description CHARACTER VARYING(255) NOT NULL,
 
@@ -74,73 +76,56 @@ CREATE TABLE pricing_plan (
 );
 
 CREATE TABLE pricing (
-  pricing_id      SMALLSERIAL,
+  pricing_id      SERIAL,
   price           DECIMAL     NOT NULL,
   price_currency  VARCHAR(15) NOT NULL,
   price_unit      VARCHAR(5)  NOT NULL,
-  pricing_plan_id INTEGER     NOT NULL REFERENCES pricing_plan (pricing_plan_id),
-  job_type_id     INTEGER     NOT NULL REFERENCES job_type (job_type_id),
+  pricing_plan_id INTEGER     NOT NULL,
+  job_type_id     INTEGER     NOT NULL,
 
-  PRIMARY KEY (pricing_id)
+  PRIMARY KEY (pricing_id),
+  FOREIGN KEY (pricing_plan_id) REFERENCES pricing_plan (pricing_plan_id) ON UPDATE CASCADE,
+  FOREIGN KEY (job_type_id) REFERENCES job_type (job_type_id) ON UPDATE CASCADE
 );
 
-CREATE TABLE jobs (
+CREATE TABLE job (
   job_id                  BIGSERIAL,
-  job_type_id             SMALLINT REFERENCES job_type (job_type_id),
+  job_type_id             INTEGER                NOT NULL,
   job_location            CHARACTER VARYING(100) NOT NULL,
-  job_created_by_user_id  BIGINT                 NOT NULL REFERENCES users (user_id),
-  job_assigned_to_user_id BIGINT REFERENCES users (user_id),
-  job_pricing_id          SMALLINT REFERENCES pricing (pricing_id),
+  job_created_by_user_id  INTEGER                NOT NULL,
+  job_assigned_to_user_id INTEGER,
+  job_pricing_id          INTEGER                NOT NULL,
   job_notes               VARCHAR(255),
-  job_created             TIMESTAMP,
+  job_created             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   job_assigned            TIMESTAMP,
   job_completed           TIMESTAMP,
 
-  PRIMARY KEY (job_id, job_created_by_user_id)
+  PRIMARY KEY (job_id),
+  FOREIGN KEY (job_type_id) REFERENCES job_type (job_type_id) ON UPDATE CASCADE,
+  FOREIGN KEY (job_created_by_user_id) REFERENCES users (user_id) ON UPDATE CASCADE,
+  FOREIGN KEY (job_assigned_to_user_id) REFERENCES users (user_id) ON UPDATE CASCADE,
+  FOREIGN KEY (job_pricing_id) REFERENCES pricing (pricing_id) ON UPDATE CASCADE
 );
+-- CREATE SEQUENCE session_token_session_token_id_seq
+-- START 1
+-- INCREMENT 1;
 
 CREATE TABLE session_token (
-  session_token_id BIGSERIAL,
-  user_id          BIGINT                NOT NULL REFERENCES users (user_id),
-  session_token    CHARACTER VARYING(20) NOT NULL,
-  created          TIMESTAMP             NOT NULL,
-  validity         TIMESTAMP             NOT NULL,
+  session_token_id SERIAL,
+  user_id          INTEGER               NOT NULL,
+  session_token    CHARACTER VARYING(32) NOT NULL,
+  created          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  validity         TIMESTAMP DEFAULT CURRENT_TIMESTAMP + (15 * INTERVAL '1 minute'),
 
-  PRIMARY KEY (session_token_id)
+  PRIMARY KEY (session_token_id),
+  FOREIGN KEY (user_id) REFERENCES users (user_id) ON UPDATE CASCADE
 );
 
-INSERT INTO user_right (user_right)
+INSERT INTO user_role (user_role_name)
 VALUES
-  ('deleteJob'),
-  ('deleteJobType'),
-  ('deleteUser'),
-  ('getJob'),
-  ('getJobType'),
-  ('getUser'),
-  ('login'),
-  ('logout'),
-  ('postJob'),
-  ('postJobType'),
-  ('postUser'),
-  ('putJob'),
-  ('putJobType'),
-  ('putUser');
-
-INSERT INTO user_role (user_role_name, user_right)
-VALUES
-  ('administrator', (SELECT array(SELECT user_right_id
-                                  FROM user_right
-                                  ORDER BY user_right_id ASC))),
-  ('customer', (SELECT array(SELECT user_right_id
-                             FROM user_right
-                             WHERE user_right IN
-                                   ('deleteUser', 'getJob', 'getUser', 'login', 'logout', 'postJob', 'putJob', 'putUser')
-                             ORDER BY user_right_id ASC))),
-  ('contractor', (SELECT array(SELECT user_right_id
-                               FROM user_right
-                               WHERE user_right IN
-                                     ('deleteUser', 'getJob', 'getUser', 'login', 'logout', 'putJob', 'putUser')
-                               ORDER BY user_right_id ASC)));
+  ('administrator'),
+  ('customer'),
+  ('contractor');
 
 INSERT INTO job_type (job_type_title, job_type_description)
 VALUES
@@ -176,6 +161,13 @@ VALUES
   ('Stone & Interlock', ''),
   ('Tile & Grout Cleaning', ''),
   ('Window & Eaves Cleaning', '');
+
+INSERT INTO job_status (job_status_name)
+VALUES
+  ('Requested'),
+  ('Accepted'),
+  ('In Progress'),
+  ('Completed');
 
 INSERT INTO pricing_plan (pricing_plan_title, pricing_plan_description)
 VALUES
@@ -232,7 +224,7 @@ INSERT INTO users (user_name, first_name, last_name, password, street_name, stre
     'Consulting',
     '$2a$04$At.7B49IFotG0mzWtwSb6.ZXLF7l9fyDiDyO4USrTQy9tdaV55esy',
     'Behdzeta Mutevelica',
-    2,
+    '2A',
     'Bosnia & Herzegovina',
     71000,
     'damir@everestconsulting.ba',

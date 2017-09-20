@@ -1,40 +1,41 @@
 package com.contractor.model.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "session_token", schema = "public", catalog = "contractor")
 public class SessionToken {
-    private long sessionTokenId;
-    private long userId;
+    private Integer sessionTokenId;
+    private Integer userId;
     private String sessionToken;
     private Timestamp created;
     private Timestamp validity;
-    private Users usersByUserId;
 
     @Id
     @Column(name = "session_token_id", nullable = false)
-    public long getSessionTokenId() {
+    public Integer getSessionTokenId() {
         return sessionTokenId;
     }
 
-    public void setSessionTokenId(long sessionTokenId) {
+    public void setSessionTokenId(Integer sessionTokenId) {
         this.sessionTokenId = sessionTokenId;
     }
 
     @Basic
     @Column(name = "user_id", nullable = false)
-    public long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
     @Basic
-    @Column(name = "session_token", nullable = false, length = 20)
+    @Column(name = "session_token", nullable = false, length = 32)
     public String getSessionToken() {
         return sessionToken;
     }
@@ -44,7 +45,7 @@ public class SessionToken {
     }
 
     @Basic
-    @Column(name = "created", nullable = false)
+    @Column(name = "created")
     public Timestamp getCreated() {
         return created;
     }
@@ -54,7 +55,7 @@ public class SessionToken {
     }
 
     @Basic
-    @Column(name = "validity", nullable = false)
+    @Column(name = "validity")
     public Timestamp getValidity() {
         return validity;
     }
@@ -70,8 +71,9 @@ public class SessionToken {
 
         SessionToken that = (SessionToken) o;
 
-        if (sessionTokenId != that.sessionTokenId) return false;
-        if (userId != that.userId) return false;
+        if (sessionTokenId != null ? !sessionTokenId.equals(that.sessionTokenId) : that.sessionTokenId != null)
+            return false;
+        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
         if (sessionToken != null ? !sessionToken.equals(that.sessionToken) : that.sessionToken != null) return false;
         if (created != null ? !created.equals(that.created) : that.created != null) return false;
         if (validity != null ? !validity.equals(that.validity) : that.validity != null) return false;
@@ -81,21 +83,11 @@ public class SessionToken {
 
     @Override
     public int hashCode() {
-        int result = (int) (sessionTokenId ^ (sessionTokenId >>> 32));
-        result = 31 * result + (int) (userId ^ (userId >>> 32));
+        int result = sessionTokenId != null ? sessionTokenId.hashCode() : 0;
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
         result = 31 * result + (sessionToken != null ? sessionToken.hashCode() : 0);
         result = 31 * result + (created != null ? created.hashCode() : 0);
         result = 31 * result + (validity != null ? validity.hashCode() : 0);
         return result;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-    public Users getUsersByUserId() {
-        return usersByUserId;
-    }
-
-    public void setUsersByUserId(Users usersByUserId) {
-        this.usersByUserId = usersByUserId;
     }
 }

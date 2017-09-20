@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.contractor.model.entity.JobStatus" table="job_status" schema="public" catalog="contractor">
+        <id name="jobStatusId">
+            <column name="job_status_id" sql-type="integer"/>
+            <generator class="identity"/>
+        </id>
+        <property name="jobStatusName">
+            <column name="job_status_name" sql-type="varchar(20)" length="20" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

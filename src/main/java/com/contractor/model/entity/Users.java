@@ -1,36 +1,36 @@
 package com.contractor.model.entity;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.sql.Timestamp;
-import java.util.Collection;
 
 @Entity
 public class Users {
-    private long userId;
+    private Integer userId;
     private String userName;
     private String firstName;
     private String lastName;
     private String password;
     private String streetName;
-    private Short streetNumber;
+    private String streetNumber;
     private String country;
     private Integer zipCode;
     private String email;
+    private Integer userRoleId;
     private String phoneNumber;
+    private Boolean active;
     private Timestamp created;
     private Timestamp lastModified;
-    private Collection<Jobs> jobsByUserId;
-    private Collection<Jobs> jobsByUserId_0;
-    private Collection<SessionToken> sessionTokensByUserId;
-    private UserRole userRoleByUserRoleId;
 
     @Id
     @Column(name = "user_id", nullable = false)
-    public long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -85,12 +85,12 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "street_number", nullable = true)
-    public Short getStreetNumber() {
+    @Column(name = "street_number", nullable = false, length = 10)
+    public String getStreetNumber() {
         return streetNumber;
     }
 
-    public void setStreetNumber(Short streetNumber) {
+    public void setStreetNumber(String streetNumber) {
         this.streetNumber = streetNumber;
     }
 
@@ -125,6 +125,16 @@ public class Users {
     }
 
     @Basic
+    @Column(name = "user_role_id", nullable = false)
+    public Integer getUserRoleId() {
+        return userRoleId;
+    }
+
+    public void setUserRoleId(Integer userRoleId) {
+        this.userRoleId = userRoleId;
+    }
+
+    @Basic
     @Column(name = "phone_number", nullable = false, length = 30)
     public String getPhoneNumber() {
         return phoneNumber;
@@ -135,7 +145,17 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "created", nullable = true)
+    @Column(name = "active", nullable = false)
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    @Basic
+    @Column(name = "created", nullable = false)
     public Timestamp getCreated() {
         return created;
     }
@@ -145,7 +165,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "last_modified", nullable = true)
+    @Column(name = "last_modified", nullable = false)
     public Timestamp getLastModified() {
         return lastModified;
     }
@@ -161,7 +181,7 @@ public class Users {
 
         Users users = (Users) o;
 
-        if (userId != users.userId) return false;
+        if (userId != null ? !userId.equals(users.userId) : users.userId != null) return false;
         if (userName != null ? !userName.equals(users.userName) : users.userName != null) return false;
         if (firstName != null ? !firstName.equals(users.firstName) : users.firstName != null) return false;
         if (lastName != null ? !lastName.equals(users.lastName) : users.lastName != null) return false;
@@ -171,7 +191,9 @@ public class Users {
         if (country != null ? !country.equals(users.country) : users.country != null) return false;
         if (zipCode != null ? !zipCode.equals(users.zipCode) : users.zipCode != null) return false;
         if (email != null ? !email.equals(users.email) : users.email != null) return false;
+        if (userRoleId != null ? !userRoleId.equals(users.userRoleId) : users.userRoleId != null) return false;
         if (phoneNumber != null ? !phoneNumber.equals(users.phoneNumber) : users.phoneNumber != null) return false;
+        if (active != null ? !active.equals(users.active) : users.active != null) return false;
         if (created != null ? !created.equals(users.created) : users.created != null) return false;
         if (lastModified != null ? !lastModified.equals(users.lastModified) : users.lastModified != null) return false;
 
@@ -180,7 +202,7 @@ public class Users {
 
     @Override
     public int hashCode() {
-        int result = (int) (userId ^ (userId >>> 32));
+        int result = userId != null ? userId.hashCode() : 0;
         result = 31 * result + (userName != null ? userName.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
@@ -190,46 +212,11 @@ public class Users {
         result = 31 * result + (country != null ? country.hashCode() : 0);
         result = 31 * result + (zipCode != null ? zipCode.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (userRoleId != null ? userRoleId.hashCode() : 0);
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        result = 31 * result + (active != null ? active.hashCode() : 0);
         result = 31 * result + (created != null ? created.hashCode() : 0);
         result = 31 * result + (lastModified != null ? lastModified.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany(mappedBy = "usersByJobCreatedByUserId")
-    public Collection<Jobs> getJobsByUserId() {
-        return jobsByUserId;
-    }
-
-    public void setJobsByUserId(Collection<Jobs> jobsByUserId) {
-        this.jobsByUserId = jobsByUserId;
-    }
-
-    @OneToMany(mappedBy = "usersByJobAssignedToUserId")
-    public Collection<Jobs> getJobsByUserId_0() {
-        return jobsByUserId_0;
-    }
-
-    public void setJobsByUserId_0(Collection<Jobs> jobsByUserId_0) {
-        this.jobsByUserId_0 = jobsByUserId_0;
-    }
-
-    @OneToMany(mappedBy = "usersByUserId")
-    public Collection<SessionToken> getSessionTokensByUserId() {
-        return sessionTokensByUserId;
-    }
-
-    public void setSessionTokensByUserId(Collection<SessionToken> sessionTokensByUserId) {
-        this.sessionTokensByUserId = sessionTokensByUserId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "user_role_id", referencedColumnName = "user_role_id", nullable = false)
-    public UserRole getUserRoleByUserRoleId() {
-        return userRoleByUserRoleId;
-    }
-
-    public void setUserRoleByUserRoleId(UserRole userRoleByUserRoleId) {
-        this.userRoleByUserRoleId = userRoleByUserRoleId;
     }
 }

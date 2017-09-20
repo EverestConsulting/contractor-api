@@ -1,27 +1,21 @@
 package com.contractor.model.request;
 
+import javax.validation.constraints.NotNull;
+
 public class LoginRequest {
 
-    private String userName;
+    @NotNull
     private String email;
     private String password;
 
     public LoginRequest() {
     }
 
-    public LoginRequest(String userName, String email, String password) {
-        this.userName = userName;
+    public LoginRequest(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     public String getEmail() {
         return email;
