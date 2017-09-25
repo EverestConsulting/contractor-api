@@ -4,22 +4,19 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.contractor.model.entity.Users" table="users" schema="public" catalog="contractor">
-        <id name="userId">
-            <column name="user_id" sql-type="integer"/>
+    <class name="com.contractor.model.entity.Company" table="company" schema="public" catalog="contractor">
+        <id name="companyId">
+            <column name="company_id" sql-type="integer"/>
             <generator class="identity"/>
         </id>
-        <property name="userName">
-            <column name="user_name" sql-type="varchar(255)"/>
+        <property name="name">
+            <column name="name" sql-type="varchar(255)"/>
         </property>
-        <property name="firstName">
-            <column name="first_name" sql-type="varchar(255)"/>
+        <property name="companyIdentificationNumber">
+            <column name="company_identification_number" sql-type="char(20)" length="20"/>
         </property>
-        <property name="lastName">
-            <column name="last_name" sql-type="varchar(255)"/>
-        </property>
-        <property name="password">
-            <column name="password" sql-type="varchar(255)"/>
+        <property name="companyRegistrationCode">
+            <column name="company_registration_code" sql-type="char(30)" length="30"/>
         </property>
         <property name="streetName">
             <column name="street_name" sql-type="varchar(255)"/>
@@ -30,23 +27,20 @@
         <property name="country">
             <column name="country" sql-type="varchar(255)"/>
         </property>
+        <property name="region">
+            <column name="region" sql-type="varchar(255)"/>
+        </property>
         <property name="zipCode">
-            <column name="zip_code" sql-type="integer"/>
+            <column name="zip_code" sql-type="integer" not-null="true"/>
         </property>
-        <property name="email">
-            <column name="email" sql-type="varchar(255)"/>
-        </property>
-        <property name="emailSubscription">
-            <column name="email_subscription" sql-type="boolean"/>
-        </property>
-        <property name="userRoleId">
-            <column name="user_role_id" sql-type="integer"/>
-        </property>
-        <property name="companyId">
-            <column name="company_id" sql-type="integer" not-null="true"/>
+        <property name="notes">
+            <column name="notes" sql-type="varchar(255)"/>
         </property>
         <property name="phoneNumber">
             <column name="phone_number" sql-type="varchar(30)" length="30"/>
+        </property>
+        <property name="bankAccountNumber">
+            <column name="bank_account_number" sql-type="varchar(30)" length="30"/>
         </property>
         <property name="active">
             <column name="active" sql-type="boolean"/>

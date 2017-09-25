@@ -1,7 +1,5 @@
 package com.contractor.model.entity;
 
-import org.hibernate.annotations.DynamicInsert;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -45,7 +43,7 @@ public class SessionToken {
     }
 
     @Basic
-    @Column(name = "created")
+    @Column(name = "created", nullable = true)
     public Timestamp getCreated() {
         return created;
     }
@@ -55,7 +53,7 @@ public class SessionToken {
     }
 
     @Basic
-    @Column(name = "validity")
+    @Column(name = "validity", nullable = true)
     public Timestamp getValidity() {
         return validity;
     }

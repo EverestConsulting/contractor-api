@@ -1,7 +1,7 @@
 -- Database: contractor
 
 -- DROP DATABASE contractor;
-
+--
 -- CREATE DATABASE contractor
 --   WITH OWNER = postgres
 --        ENCODING = 'UTF8'
@@ -13,7 +13,6 @@
 -- COMMENT ON DATABASE contractor
 --   IS 'Contractor app db';
 
-
 DROP TABLE IF EXISTS session_token;
 DROP TABLE IF EXISTS job;
 DROP TABLE IF EXISTS pricing;
@@ -21,7 +20,8 @@ DROP TABLE IF EXISTS pricing_plan;
 DROP TABLE IF EXISTS job_type;
 DROP TABLE IF EXISTS job_status;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS user_role;
+DROP TABLE IF EXISTS company;
+DROP TABLE IF EXISTS user_role CASCADE;
 
 CREATE TABLE user_role (
   user_role_id   SERIAL,
@@ -30,25 +30,48 @@ CREATE TABLE user_role (
   PRIMARY KEY (user_role_id)
 );
 
+CREATE TABLE company (
+  company_id                    SERIAL,
+  name                          CHARACTER VARYING(255) NOT NULL,
+  company_identification_number CHARACTER(20)          NOT NULL,
+  company_registration_code     CHARACTER(30)          NOT NULL,
+  street_name                   CHARACTER VARYING(255) NOT NULL,
+  street_number                 CHARACTER VARYING(10)  NOT NULL,
+  country                       CHARACTER VARYING(255) NOT NULL,
+  region                        CHARACTER VARYING(255) NOT NULL,
+  zip_code                      INTEGER,
+  notes                         CHARACTER VARYING(255) NOT NULL,
+  phone_number                  CHARACTER VARYING(30)  NOT NULL,
+  bank_account_number           CHARACTER VARYING(30)  NOT NULL,
+  active                        BOOLEAN                NOT NULL DEFAULT FALSE,
+  created                       TIMESTAMP              NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_modified                 TIMESTAMP              NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (company_id)
+);
+
 CREATE TABLE users (
-  user_id       SERIAL,
-  user_name     CHARACTER VARYING(255) NOT NULL,
-  first_name    CHARACTER VARYING(255) NOT NULL,
-  last_name     CHARACTER VARYING(255) NOT NULL,
-  password      CHARACTER VARYING(255) NOT NULL,
-  street_name   CHARACTER VARYING(255) NOT NULL,
-  street_number CHARACTER VARYING(10)  NOT NULL,
-  country       CHARACTER VARYING(255) NOT NULL,
-  zip_code      INTEGER,
-  email         CHARACTER VARYING(255) NOT NULL,
-  user_role_id  INTEGER                NOT NULL,
-  phone_number  CHARACTER VARYING(30)  NOT NULL,
-  active        BOOLEAN                NOT NULL DEFAULT TRUE,
-  created       TIMESTAMP              NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  last_modified TIMESTAMP              NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  user_id            SERIAL,
+  user_name          CHARACTER VARYING(255) NOT NULL,
+  first_name         CHARACTER VARYING(255) NOT NULL,
+  last_name          CHARACTER VARYING(255) NOT NULL,
+  password           CHARACTER VARYING(255) NOT NULL,
+  street_name        CHARACTER VARYING(255) NOT NULL,
+  street_number      CHARACTER VARYING(10)  NOT NULL,
+  country            CHARACTER VARYING(255) NOT NULL,
+  zip_code           INTEGER                NOT NULL,
+  email              CHARACTER VARYING(255) NOT NULL  UNIQUE,
+  email_subscription BOOLEAN                NOT NULL DEFAULT FALSE,
+  user_role_id       INTEGER                NOT NULL,
+  company_id         INTEGER,
+  phone_number       CHARACTER VARYING(30)  NOT NULL,
+  active             BOOLEAN                NOT NULL DEFAULT TRUE,
+  created            TIMESTAMP              NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_modified      TIMESTAMP              NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
   PRIMARY KEY (user_id),
   FOREIGN KEY (user_role_id) REFERENCES user_role (user_role_id) ON UPDATE CASCADE,
+  FOREIGN KEY (company_id) REFERENCES company (company_id) ON UPDATE CASCADE,
   UNIQUE (email)
 );
 
@@ -71,6 +94,7 @@ CREATE TABLE pricing_plan (
   pricing_plan_id          SERIAL,
   pricing_plan_title       CHARACTER VARYING(30)  NOT NULL,
   pricing_plan_description CHARACTER VARYING(255) NOT NULL,
+  pricing_plan_coefficient REAL                   NOT NULL,
 
   PRIMARY KEY (pricing_plan_id)
 );
@@ -79,7 +103,7 @@ CREATE TABLE pricing (
   pricing_id      SERIAL,
   price           DECIMAL     NOT NULL,
   price_currency  VARCHAR(15) NOT NULL,
-  price_unit      VARCHAR(5)  NOT NULL,
+  price_unit      VARCHAR(20) NOT NULL,
   pricing_plan_id INTEGER     NOT NULL,
   job_type_id     INTEGER     NOT NULL,
 
@@ -106,9 +130,6 @@ CREATE TABLE job (
   FOREIGN KEY (job_assigned_to_user_id) REFERENCES users (user_id) ON UPDATE CASCADE,
   FOREIGN KEY (job_pricing_id) REFERENCES pricing (pricing_id) ON UPDATE CASCADE
 );
--- CREATE SEQUENCE session_token_session_token_id_seq
--- START 1
--- INCREMENT 1;
 
 CREATE TABLE session_token (
   session_token_id SERIAL,
@@ -167,13 +188,14 @@ VALUES
   ('Requested'),
   ('Accepted'),
   ('In Progress'),
+  ('Review'),
   ('Completed');
 
-INSERT INTO pricing_plan (pricing_plan_title, pricing_plan_description)
+INSERT INTO pricing_plan (pricing_plan_title, pricing_plan_description, pricing_plan_coefficient)
 VALUES
-  ('work days', ''),
-  ('work days - after hours', ''),
-  ('weekend', '');
+  ('work days', '', 1.0),
+  ('work days - after hours', '', 1.5),
+  ('weekend', '', 1.5);
 
 INSERT INTO pricing (price, price_currency, price_unit, pricing_plan_id, job_type_id)
   SELECT

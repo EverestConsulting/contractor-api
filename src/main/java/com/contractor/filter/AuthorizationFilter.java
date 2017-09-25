@@ -40,7 +40,6 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         List<UserRights> methodRights = extractRights(resourceMethod);
 
         try {
-//            Users user = new UsersDao().fetchUserById(Long.valueOf(principalName));
             Users user = App.instance().getUserDao().get(Integer.valueOf(requestContext.getSecurityContext().getUserPrincipal().getName()));
 
             if (null == user) {

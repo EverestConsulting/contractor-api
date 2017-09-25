@@ -21,6 +21,10 @@ TODO
 unreleased
 ==========
 
+Code Cleanup
+
+    - Code cleanup
+
 - REST API Logic
     - Implement REST Api logic for created models.
 

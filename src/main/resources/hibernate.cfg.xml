@@ -14,6 +14,7 @@
         <!-- Print executed SQL to stdout -->
         <property name="show_sql">true</property>
         <!-- Annotated entity classes -->
+        <mapping class="com.contractor.model.entity.Company"/>
         <mapping class="com.contractor.model.entity.Job"/>
         <mapping class="com.contractor.model.entity.JobStatus"/>
         <mapping class="com.contractor.model.entity.JobType"/>
@@ -22,6 +23,7 @@
         <mapping class="com.contractor.model.entity.SessionToken"/>
         <mapping class="com.contractor.model.entity.UserRole"/>
         <mapping class="com.contractor.model.entity.Users"/>
+        <mapping resource="Company.hbm.xml"/>
         <mapping resource="Job.hbm.xml"/>
         <mapping resource="JobStatus.hbm.xml"/>
         <mapping resource="JobType.hbm.xml"/>

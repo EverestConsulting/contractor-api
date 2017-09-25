@@ -15,5 +15,8 @@
         <property name="pricingPlanDescription">
             <column name="pricing_plan_description" sql-type="varchar(255)"/>
         </property>
+        <property name="pricingPlanCoefficient">
+            <column name="pricing_plan_coefficient" sql-type="real" precision="-1"/>
+        </property>
     </class>
 </hibernate-mapping>

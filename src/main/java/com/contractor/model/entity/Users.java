@@ -18,7 +18,9 @@ public class Users {
     private String country;
     private Integer zipCode;
     private String email;
+    private Boolean emailSubscription;
     private Integer userRoleId;
+    private Integer companyId;
     private String phoneNumber;
     private Boolean active;
     private Timestamp created;
@@ -105,7 +107,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "zip_code", nullable = true)
+    @Column(name = "zip_code", nullable = false)
     public Integer getZipCode() {
         return zipCode;
     }
@@ -125,6 +127,16 @@ public class Users {
     }
 
     @Basic
+    @Column(name = "email_subscription", nullable = false)
+    public Boolean getEmailSubscription() {
+        return emailSubscription;
+    }
+
+    public void setEmailSubscription(Boolean emailSubscription) {
+        this.emailSubscription = emailSubscription;
+    }
+
+    @Basic
     @Column(name = "user_role_id", nullable = false)
     public Integer getUserRoleId() {
         return userRoleId;
@@ -132,6 +144,16 @@ public class Users {
 
     public void setUserRoleId(Integer userRoleId) {
         this.userRoleId = userRoleId;
+    }
+
+    @Basic
+    @Column(name = "company_id", nullable = true)
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     @Basic
@@ -191,7 +213,10 @@ public class Users {
         if (country != null ? !country.equals(users.country) : users.country != null) return false;
         if (zipCode != null ? !zipCode.equals(users.zipCode) : users.zipCode != null) return false;
         if (email != null ? !email.equals(users.email) : users.email != null) return false;
+        if (emailSubscription != null ? !emailSubscription.equals(users.emailSubscription) : users.emailSubscription != null)
+            return false;
         if (userRoleId != null ? !userRoleId.equals(users.userRoleId) : users.userRoleId != null) return false;
+        if (companyId != null ? !companyId.equals(users.companyId) : users.companyId != null) return false;
         if (phoneNumber != null ? !phoneNumber.equals(users.phoneNumber) : users.phoneNumber != null) return false;
         if (active != null ? !active.equals(users.active) : users.active != null) return false;
         if (created != null ? !created.equals(users.created) : users.created != null) return false;
@@ -212,7 +237,9 @@ public class Users {
         result = 31 * result + (country != null ? country.hashCode() : 0);
         result = 31 * result + (zipCode != null ? zipCode.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (emailSubscription != null ? emailSubscription.hashCode() : 0);
         result = 31 * result + (userRoleId != null ? userRoleId.hashCode() : 0);
+        result = 31 * result + (companyId != null ? companyId.hashCode() : 0);
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + (active != null ? active.hashCode() : 0);
         result = 31 * result + (created != null ? created.hashCode() : 0);

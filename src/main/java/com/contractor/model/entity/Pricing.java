@@ -12,6 +12,7 @@ public class Pricing {
     private BigInteger price;
     private String priceCurrency;
     private String priceUnit;
+    private Integer pricingPlanId;
     private Integer jobTypeId;
 
     @Id
@@ -45,13 +46,23 @@ public class Pricing {
     }
 
     @Basic
-    @Column(name = "price_unit", nullable = false, length = 5)
+    @Column(name = "price_unit", nullable = false, length = 20)
     public String getPriceUnit() {
         return priceUnit;
     }
 
     public void setPriceUnit(String priceUnit) {
         this.priceUnit = priceUnit;
+    }
+
+    @Basic
+    @Column(name = "pricing_plan_id", nullable = false)
+    public Integer getPricingPlanId() {
+        return pricingPlanId;
+    }
+
+    public void setPricingPlanId(Integer pricingPlanId) {
+        this.pricingPlanId = pricingPlanId;
     }
 
     @Basic
@@ -76,6 +87,8 @@ public class Pricing {
         if (priceCurrency != null ? !priceCurrency.equals(pricing.priceCurrency) : pricing.priceCurrency != null)
             return false;
         if (priceUnit != null ? !priceUnit.equals(pricing.priceUnit) : pricing.priceUnit != null) return false;
+        if (pricingPlanId != null ? !pricingPlanId.equals(pricing.pricingPlanId) : pricing.pricingPlanId != null)
+            return false;
         if (jobTypeId != null ? !jobTypeId.equals(pricing.jobTypeId) : pricing.jobTypeId != null) return false;
 
         return true;
@@ -87,6 +100,7 @@ public class Pricing {
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (priceCurrency != null ? priceCurrency.hashCode() : 0);
         result = 31 * result + (priceUnit != null ? priceUnit.hashCode() : 0);
+        result = 31 * result + (pricingPlanId != null ? pricingPlanId.hashCode() : 0);
         result = 31 * result + (jobTypeId != null ? jobTypeId.hashCode() : 0);
         return result;
     }

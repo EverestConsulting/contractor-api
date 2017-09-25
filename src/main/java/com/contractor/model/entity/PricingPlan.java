@@ -8,6 +8,7 @@ public class PricingPlan {
     private Integer pricingPlanId;
     private String pricingPlanTitle;
     private String pricingPlanDescription;
+    private Float pricingPlanCoefficient;
 
     @Id
     @Column(name = "pricing_plan_id", nullable = false)
@@ -39,6 +40,16 @@ public class PricingPlan {
         this.pricingPlanDescription = pricingPlanDescription;
     }
 
+    @Basic
+    @Column(name = "pricing_plan_coefficient", nullable = false, precision = 0)
+    public Float getPricingPlanCoefficient() {
+        return pricingPlanCoefficient;
+    }
+
+    public void setPricingPlanCoefficient(Float pricingPlanCoefficient) {
+        this.pricingPlanCoefficient = pricingPlanCoefficient;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,6 +63,8 @@ public class PricingPlan {
             return false;
         if (pricingPlanDescription != null ? !pricingPlanDescription.equals(that.pricingPlanDescription) : that.pricingPlanDescription != null)
             return false;
+        if (pricingPlanCoefficient != null ? !pricingPlanCoefficient.equals(that.pricingPlanCoefficient) : that.pricingPlanCoefficient != null)
+            return false;
 
         return true;
     }
@@ -61,6 +74,7 @@ public class PricingPlan {
         int result = pricingPlanId != null ? pricingPlanId.hashCode() : 0;
         result = 31 * result + (pricingPlanTitle != null ? pricingPlanTitle.hashCode() : 0);
         result = 31 * result + (pricingPlanDescription != null ? pricingPlanDescription.hashCode() : 0);
+        result = 31 * result + (pricingPlanCoefficient != null ? pricingPlanCoefficient.hashCode() : 0);
         return result;
     }
 }
