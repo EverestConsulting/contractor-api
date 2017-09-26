@@ -4,7 +4,7 @@ package com.contractor;
 import com.contractor.model.dao.*;
 
 import com.contractor.model.entity.UserRole;
-import com.contractor.model.enums.UserRights;
+import com.contractor.enums.UserRights;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,27 +20,30 @@ public class App {
     private Map<Integer, List<UserRights>> rolesAndRights;
     private List<UserRole> userRoles;
 
+    private CompanyDao companyDao;
     private JobDao jobDao;
     private JobStatusDao jobStatusDao;
     private JobTypeDao jobTypeDao;
+    private NotificationTokenDao notificationTokenDao;
     private PricingDao pricingDao;
     private PricingPlanDao pricingPlanDao;
-    private UserRoleDao userRoleDao;
     private SessionTokenDao sessionTokenDao;
     private UserDao userDao;
+    private UserRoleDao userRoleDao;
 
     private App() {
-        //singleton
 
         //instantiate data access singleton classes
+        companyDao = new CompanyDao();
         jobDao = new JobDao();
         jobStatusDao = new JobStatusDao();
         jobTypeDao = new JobTypeDao();
+        notificationTokenDao = new NotificationTokenDao();
         pricingDao = new PricingDao();
         pricingPlanDao = new PricingPlanDao();
-        userRoleDao = new UserRoleDao();
         sessionTokenDao = new SessionTokenDao();
         userDao = new UserDao();
+        userRoleDao = new UserRoleDao();
 
         //load runtime variables
         loadConfig();
@@ -88,16 +91,6 @@ public class App {
     }
 
     /**
-     * Clear all app constants and reload them.
-     */
-    public void reloadConfig() {
-        rolesAndRights.clear();
-        userRoles.clear();
-
-        loadConfig();
-    }
-
-    /**
      * @return Map with user rights and roles.
      */
     public Map<Integer, List<UserRights>> getRolesAndRights() {
@@ -111,6 +104,9 @@ public class App {
         return userRoles;
     }
 
+    public CompanyDao getCompanyDao() {
+        return companyDao;
+    }
 
     public JobDao getJobDao() {
         return jobDao;
@@ -124,6 +120,10 @@ public class App {
         return jobTypeDao;
     }
 
+    public NotificationTokenDao getNotificationTokenDao() {
+        return notificationTokenDao;
+    }
+
     public PricingDao getPricingDao() {
         return pricingDao;
     }
@@ -132,25 +132,15 @@ public class App {
         return pricingPlanDao;
     }
 
-
-    /**
-     * @return
-     */
-    public UserRoleDao getUserRoleDao() {
-        return userRoleDao;
-    }
-
-    /**
-     * @return
-     */
     public SessionTokenDao getSessionTokenDao() {
         return sessionTokenDao;
     }
 
-    /**
-     * @return
-     */
     public UserDao getUserDao() {
         return userDao;
+    }
+
+    public UserRoleDao getUserRoleDao() {
+        return userRoleDao;
     }
 }

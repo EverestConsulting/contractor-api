@@ -1,6 +1,6 @@
 package com.contractor.filter;
 
-import com.contractor.model.enums.UserRights;
+import com.contractor.enums.UserRights;
 
 import javax.ws.rs.NameBinding;
 import java.lang.annotation.Retention;

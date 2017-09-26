@@ -2,7 +2,7 @@ package com.contractor.filter;
 
 import com.contractor.App;
 import com.contractor.model.entity.SessionToken;
-import com.contractor.model.enums.DBProperty;
+import com.contractor.enums.DBProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +46,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         try {
 
             // Validate the token
-            final SessionToken sessionToken = App.instance().getSessionTokenDao().getByParam(DBProperty.sessionToken.name(), token);
+            final SessionToken sessionToken = App.instance().getSessionTokenDao().getByParam(DBProperty.sessionToken, token);
 
             if (null == sessionToken) {
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());

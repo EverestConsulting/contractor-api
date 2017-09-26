@@ -21,6 +21,11 @@ TODO
 unreleased
 ==========
 
+Firebase Notification
+
+    - Added firebase notification models and logic.
+    - Added and implemented RestEasy client.
+
 Code Cleanup
 
     - Code cleanup

@@ -8,12 +8,10 @@ import com.contractor.controller.SessionController;
 import com.contractor.filter.Secured;
 
 import com.contractor.model.entity.*;
-import com.contractor.model.enums.UserRights;
+import com.contractor.enums.UserRights;
 import com.contractor.model.request.LoginRequest;
 import com.contractor.model.response.LoginResponse;
 import com.contractor.model.response.VersionInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
@@ -31,7 +29,6 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ApiResources {
-    private static final Logger LOG = LoggerFactory.getLogger(ApiResources.class.getSimpleName());
 
     @GET
     @Path("/version-info")
@@ -63,8 +60,8 @@ public class ApiResources {
     }
 
     @GET
-    @Path("/job-type")
-    public Response getJobTypes() {
+    @Path("/category")
+    public Response getCategories() {
         List<JobType> jobTypeList = App.instance().getJobTypeDao().findAll();
 
         return null == jobTypeList ?

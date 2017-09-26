@@ -3,7 +3,7 @@ package com.contractor.api.v1;
 import com.contractor.controller.UserController;
 import com.contractor.filter.Secured;
 import com.contractor.model.entity.Users;
-import com.contractor.model.enums.UserRights;
+import com.contractor.enums.UserRights;
 import com.contractor.model.request.RegistrationRequest;
 
 import javax.validation.constraints.NotNull;
@@ -12,7 +12,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 @Path("v1/user")

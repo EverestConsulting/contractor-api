@@ -18,6 +18,7 @@
         <mapping class="com.contractor.model.entity.Job"/>
         <mapping class="com.contractor.model.entity.JobStatus"/>
         <mapping class="com.contractor.model.entity.JobType"/>
+        <mapping class="com.contractor.model.entity.NotificationToken"/>
         <mapping class="com.contractor.model.entity.Pricing"/>
         <mapping class="com.contractor.model.entity.PricingPlan"/>
         <mapping class="com.contractor.model.entity.SessionToken"/>
@@ -27,6 +28,7 @@
         <mapping resource="Job.hbm.xml"/>
         <mapping resource="JobStatus.hbm.xml"/>
         <mapping resource="JobType.hbm.xml"/>
+        <mapping resource="NotificationToken.hbm.xml"/>
         <mapping resource="Pricing.hbm.xml"/>
         <mapping resource="PricingPlan.hbm.xml"/>
         <mapping resource="SessionToken.hbm.xml"/>

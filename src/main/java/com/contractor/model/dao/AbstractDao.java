@@ -1,7 +1,7 @@
 package com.contractor.model.dao;
 
 import com.contractor.db.HibernateUtil;
-import com.contractor.model.enums.DBProperty;
+import com.contractor.enums.DBProperty;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,7 +19,7 @@ public abstract class AbstractDao<T> {
     private Class<T> clazz;
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-     AbstractDao(Class<T> clazz) {
+    AbstractDao(Class<T> clazz) {
         this.clazz = clazz;
     }
 
@@ -52,15 +52,15 @@ public abstract class AbstractDao<T> {
     }
 
     public T get(Integer id) {
-        return getByParam(DBProperty.id.name(), id);
+        return getByParam(DBProperty.id, id);
     }
 
     @SuppressWarnings("unchecked cast")
-    public T getByParam(String param, Object id) {
+    public T getByParam(DBProperty param, Object id) {
         T entity = null;
         Session session = null;
 
-        String FETCH_BY_PARAM = String.format("FROM %s e where e.%s = :ID", this.clazz.getSimpleName(), param);
+        String FETCH_BY_PARAM = String.format("FROM %s e where e.%s = :ID", this.clazz.getSimpleName(), param.name());
 
         try {
             session = sessionFactory.openSession();

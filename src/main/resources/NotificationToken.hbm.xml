@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.contractor.model.entity.NotificationToken" table="notification_token" schema="public"
+           catalog="contractor">
+        <id name="notificationTokenId">
+            <column name="notification_token_id" sql-type="integer"/>
+            <generator class="identity"/>
+        </id>
+        <property name="userId">
+            <column name="user_id" sql-type="integer"/>
+        </property>
+        <property name="tokenType">
+            <column name="token_type" sql-type="varchar(10)" length="10"/>
+        </property>
+        <property name="notificationToken">
+            <column name="notification_token" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="created">
+            <column name="created" sql-type="timestamp" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

@@ -13,6 +13,7 @@
 -- COMMENT ON DATABASE contractor
 --   IS 'Contractor app db';
 
+DROP TABLE IF EXISTS notification_token;
 DROP TABLE IF EXISTS session_token;
 DROP TABLE IF EXISTS job;
 DROP TABLE IF EXISTS pricing;
@@ -140,6 +141,17 @@ CREATE TABLE session_token (
 
   PRIMARY KEY (session_token_id),
   FOREIGN KEY (user_id) REFERENCES users (user_id) ON UPDATE CASCADE
+);
+
+CREATE TABLE notification_token (
+  notification_token_id SERIAL,
+  user_id               INTEGER     NOT NULL,
+  token_type            VARCHAR(10) NOT NULL,
+  notification_token    CHARACTER VARYING(255),
+  created               TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (notification_token_id),
+  FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
 INSERT INTO user_role (user_role_name)

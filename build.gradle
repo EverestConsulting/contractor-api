@@ -50,6 +50,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     compile group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
+
+    //resteasy http client
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
 }
 
 task deployLocal(dependsOn: assemble, type: Copy) {

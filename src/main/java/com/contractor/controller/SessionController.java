@@ -6,7 +6,7 @@ import com.contractor.model.dao.SessionTokenDao;
 import com.contractor.model.dao.UserDao;
 import com.contractor.model.entity.SessionToken;
 import com.contractor.model.entity.Users;
-import com.contractor.model.enums.DBProperty;
+import com.contractor.enums.DBProperty;
 import com.contractor.model.request.LoginRequest;
 import com.contractor.model.response.LoginResponse;
 import com.contractor.util.Crypt;
@@ -51,7 +51,7 @@ public class SessionController {
 
     public Response login(LoginRequest loginRequest) {
         //fetch user
-        Users user = App.instance().getUserDao().getByParam(DBProperty.email.name(), loginRequest.getEmail());
+        Users user = USER_DAO.getByParam(DBProperty.email, loginRequest.getEmail());
         //check credentials
         boolean userValid = null != user && Crypt.hashMatches(loginRequest.getPassword(), user.getPassword());
 
@@ -80,7 +80,7 @@ public class SessionController {
     }
 
     public Response logout(Integer userId) {
-        SessionToken sessionToken = SESSION_TOKEN_DAO.getByParam(DBProperty.userId.name(), userId);
+        SessionToken sessionToken = SESSION_TOKEN_DAO.getByParam(DBProperty.userId, userId);
         if (null != sessionToken) {
             SESSION_TOKEN_DAO.delete(sessionToken);
         }

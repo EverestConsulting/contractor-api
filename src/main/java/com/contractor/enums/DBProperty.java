@@ -1,4 +1,4 @@
-package com.contractor.model.enums;
+package com.contractor.enums;
 
 public enum DBProperty {
     email,

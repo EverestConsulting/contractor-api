@@ -4,7 +4,7 @@ import com.contractor.controller.JobsController;
 import com.contractor.filter.Secured;
 
 import com.contractor.model.entity.Job;
-import com.contractor.model.enums.UserRights;
+import com.contractor.enums.UserRights;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;

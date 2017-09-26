@@ -2,7 +2,7 @@ package com.contractor.filter;
 
 import com.contractor.App;
 import com.contractor.model.entity.Users;
-import com.contractor.model.enums.UserRights;
+import com.contractor.enums.UserRights;
 
 import javax.annotation.Priority;
 import javax.validation.constraints.NotNull;
