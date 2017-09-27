@@ -9,8 +9,8 @@
             <column name="job_id" sql-type="bigint"/>
             <generator class="identity"/>
         </id>
-        <property name="jobTypeId">
-            <column name="job_type_id" sql-type="integer"/>
+        <property name="jobCategoryId">
+            <column name="job_category_id" sql-type="integer"/>
         </property>
         <property name="jobLocation">
             <column name="job_location" sql-type="varchar(100)" length="100"/>
@@ -24,11 +24,14 @@
         <property name="jobPricingId">
             <column name="job_pricing_id" sql-type="integer"/>
         </property>
+        <property name="jobPricingPlanId">
+            <column name="job_pricing_plan_id" sql-type="integer"/>
+        </property>
         <property name="jobNotes">
             <column name="job_notes" sql-type="varchar(255)" not-null="true"/>
         </property>
         <property name="jobCreated">
-            <column name="job_created" sql-type="timestamp" not-null="true"/>
+            <column name="job_created" sql-type="timestamp"/>
         </property>
         <property name="jobAssigned">
             <column name="job_assigned" sql-type="timestamp" not-null="true"/>

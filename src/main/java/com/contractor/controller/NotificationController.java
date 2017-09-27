@@ -45,7 +45,7 @@ public class NotificationController {
             return ResponseFactory.getInternalError500();
         }
 
-        return ResponseFactory.getSuccess200();
+        return ResponseFactory.getCreated201();
     }
 
     NotificationToken getNotificationToken(Integer userId) {
@@ -58,6 +58,6 @@ public class NotificationController {
         NotificationToken notificationToken = getNotificationToken(userId);
         NOTIFICATION_TOKEN_DAO.delete(notificationToken);
 
-        return ResponseFactory.getSuccess200();
+        return ResponseFactory.getNoContent204();
     }
 }

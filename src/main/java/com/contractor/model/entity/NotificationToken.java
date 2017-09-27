@@ -6,14 +6,23 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "notification_token", schema = "public", catalog = "contractor")
 public class NotificationToken {
+    private Integer notificationTokenId;
     private Integer userId;
     private String tokenType;
     private String notificationToken;
     private Timestamp created;
-    private Integer notificationTokenId;
+
+    @Id
+    @Column(name = "notification_token_id", nullable = false)
+    public Integer getNotificationTokenId() {
+        return notificationTokenId;
+    }
+
+    public void setNotificationTokenId(Integer notificationTokenId) {
+        this.notificationTokenId = notificationTokenId;
+    }
 
     @Basic
-    @Id
     @Column(name = "user_id", nullable = false)
     public Integer getUserId() {
         return userId;
@@ -60,6 +69,8 @@ public class NotificationToken {
 
         NotificationToken that = (NotificationToken) o;
 
+        if (notificationTokenId != null ? !notificationTokenId.equals(that.notificationTokenId) : that.notificationTokenId != null)
+            return false;
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
         if (tokenType != null ? !tokenType.equals(that.tokenType) : that.tokenType != null) return false;
         if (notificationToken != null ? !notificationToken.equals(that.notificationToken) : that.notificationToken != null)
@@ -71,20 +82,11 @@ public class NotificationToken {
 
     @Override
     public int hashCode() {
-        int result = userId != null ? userId.hashCode() : 0;
+        int result = notificationTokenId != null ? notificationTokenId.hashCode() : 0;
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
         result = 31 * result + (tokenType != null ? tokenType.hashCode() : 0);
         result = 31 * result + (notificationToken != null ? notificationToken.hashCode() : 0);
         result = 31 * result + (created != null ? created.hashCode() : 0);
         return result;
-    }
-
-    @Id
-    @Column(name = "notification_token_id", nullable = false)
-    public Integer getNotificationTokenId() {
-        return notificationTokenId;
-    }
-
-    public void setNotificationTokenId(Integer notificationTokenId) {
-        this.notificationTokenId = notificationTokenId;
     }
 }

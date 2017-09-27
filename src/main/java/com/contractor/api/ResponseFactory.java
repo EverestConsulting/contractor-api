@@ -30,50 +30,19 @@ public class ResponseFactory {
      * @return formatted Response
      */
     public static Response getSuccess200(Object data) {
-        return Response.ok(new ResponseMessage(true, data, null)).build();
+        return Response.ok(data).build();
     }
 
-    /**
-     * Get blank 404 error
-     *
-     * @return formatted Response
-     */
-    public static Response getNotFound404() {
-        return getNotFound404(null, null);
+    public static Response getCreated201() {
+        return Response.status(Response.Status.CREATED).build();
     }
 
-    /**
-     * Get 404 error with error message
-     *
-     * @param errorMessage error message
-     * @param errorReason  error reason (details)
-     * @return formatted Response
-     */
-    public static Response getNotFound404(String errorMessage, String errorReason) {
-        return buildErrorResponse(Response.Status.NOT_FOUND, errorMessage, errorReason, null);
+    public static Response getCreated201(Object data) {
+        return Response.status(Response.Status.CREATED).entity(data).build();
     }
 
-    /**
-     * Get 400 error with error message
-     *
-     * @param errorMessage error message
-     * @param errorReason  error reason (details)
-     * @return formatted Response
-     */
-    public static Response getBadRequest400(String errorMessage, String errorReason) {
-        return getBadRequest400(errorMessage, errorReason, null);
-    }
-
-    /**
-     * Get 400 error with custom error code, error message and more details
-     *
-     * @param errorMessage error message
-     * @param errorReason  error reason (details)
-     * @param errorDetails error details object (json)
-     * @return formatted Response
-     */
-    public static Response getBadRequest400(String errorMessage, String errorReason, Object errorDetails) {
-        return buildErrorResponse(Response.Status.BAD_REQUEST, errorMessage, errorReason, errorDetails);
+    public static Response getNoContent204() {
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 
     /**
@@ -91,6 +60,17 @@ public class ResponseFactory {
         return getInternalError500();
     }
 
+
+    /**
+     * Get 400 error with custom error code, error message and more details
+     *
+     * @param errorMessage error message
+     * @return formatted Response
+     */
+    public static Response getBadRequest400(String errorMessage) {
+        return buildErrorResponse(Response.Status.BAD_REQUEST, errorMessage);
+    }
+
     /**
      * Get blank 401 error message
      *
@@ -101,12 +81,32 @@ public class ResponseFactory {
     }
 
     /**
+     * Get blank 404 error
+     *
+     * @return formatted Response
+     */
+    public static Response getNotFound404() {
+        return getNotFound404("Unable to find requested source!!!");
+    }
+
+    /**
+     * Get 404 error with error message
+     *
+     * @param errorMessage error message
+     * @return formatted Response
+     */
+    public static Response getNotFound404(String errorMessage) {
+        return buildErrorResponse(Response.Status.NOT_FOUND, errorMessage);
+    }
+
+
+    /**
      * Get default 500 error message
      *
      * @return formatted Response
      */
     public static Response getInternalError500() {
-        return getInternalError500(null);
+        return getInternalError500("Ups, something went wrong!");
     }
 
     /**
@@ -115,12 +115,10 @@ public class ResponseFactory {
      * @param reason the reason
      * @return formatted Response
      */
-    public static Response getInternalError500(String reason) {
+    private static Response getInternalError500(String reason) {
         return buildErrorResponse(
                 Response.Status.INTERNAL_SERVER_ERROR,
-                "Ups, something went wrong!",
-                null != reason ? reason : "Nobody knows!",
-                null);
+                reason);
     }
 
     /**
@@ -129,52 +127,24 @@ public class ResponseFactory {
      * @return formatted Response
      */
     public static Response getNotImplemented501() {
-        return buildErrorResponse(
-                Response.Status.NOT_IMPLEMENTED,
-                "This feature is not implemented!",
-                null,
-                null);
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 
-    private static Response buildErrorResponse(Response.Status status, String errorMessage, String errorReason, Object errorDetails) {
+    private static Response buildErrorResponse(Response.Status status, String errorMessage) {
         return Response
                 .status(status)
-                .entity(new ResponseMessage(
-                        false,
-                        null,
-                        new ErrorMessage(
-                                String.valueOf(status.getStatusCode()),
-                                null != errorMessage ? errorMessage : "",
-                                null != errorReason ? errorReason : "",
-                                null != errorDetails ? errorDetails : "")
+                .entity(new ErrorMessage(
+                        null != errorMessage ? errorMessage : ""
                 ))
                 .build();
     }
 
-    private static class ResponseMessage {
-
-        public Boolean requestSuccess;
-        public Object data;
-        public ErrorMessage errorMessage;
-
-        public ResponseMessage(Boolean requestSuccess, Object data, ErrorMessage errorMessage) {
-            this.requestSuccess = requestSuccess;
-            this.data = data;
-            this.errorMessage = errorMessage;
-        }
-    }
 
     private static class ErrorMessage {
-        public String errorCode;
-        public String errorMessage;
-        public String errorReason;
-        public Object errorDetails;
+        String errorMessage;
 
-        public ErrorMessage(String errorCode, String errorMessage, String errorReason, Object errorDetails) {
-            this.errorCode = errorCode;
+        ErrorMessage(String errorMessage) {
             this.errorMessage = errorMessage;
-            this.errorReason = errorReason;
-            this.errorDetails = errorDetails;
         }
     }
 }

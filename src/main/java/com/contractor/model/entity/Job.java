@@ -9,11 +9,12 @@ import java.sql.Timestamp;
 @Entity
 public class Job {
     private Long jobId;
-    private Integer jobTypeId;
+    private Integer jobCategoryId;
     private String jobLocation;
     private Integer jobCreatedByUserId;
     private Integer jobAssignedToUserId;
     private Integer jobPricingId;
+    private Integer jobPricingPlanId;
     private String jobNotes;
     private Timestamp jobCreated;
     private Timestamp jobAssigned;
@@ -30,13 +31,13 @@ public class Job {
     }
 
     @Basic
-    @Column(name = "job_type_id", nullable = false)
-    public Integer getJobTypeId() {
-        return jobTypeId;
+    @Column(name = "job_category_id", nullable = false)
+    public Integer getJobCategoryId() {
+        return jobCategoryId;
     }
 
-    public void setJobTypeId(Integer jobTypeId) {
-        this.jobTypeId = jobTypeId;
+    public void setJobCategoryId(Integer jobCategoryId) {
+        this.jobCategoryId = jobCategoryId;
     }
 
     @Basic
@@ -80,6 +81,16 @@ public class Job {
     }
 
     @Basic
+    @Column(name = "job_pricing_plan_id", nullable = false)
+    public Integer getJobPricingPlanId() {
+        return jobPricingPlanId;
+    }
+
+    public void setJobPricingPlanId(Integer jobPricingPlanId) {
+        this.jobPricingPlanId = jobPricingPlanId;
+    }
+
+    @Basic
     @Column(name = "job_notes", nullable = true, length = 255)
     public String getJobNotes() {
         return jobNotes;
@@ -90,7 +101,7 @@ public class Job {
     }
 
     @Basic
-    @Column(name = "job_created", nullable = true)
+    @Column(name = "job_created", nullable = false)
     public Timestamp getJobCreated() {
         return jobCreated;
     }
@@ -127,13 +138,15 @@ public class Job {
         Job job = (Job) o;
 
         if (jobId != null ? !jobId.equals(job.jobId) : job.jobId != null) return false;
-        if (jobTypeId != null ? !jobTypeId.equals(job.jobTypeId) : job.jobTypeId != null) return false;
+        if (jobCategoryId != null ? !jobCategoryId.equals(job.jobCategoryId) : job.jobCategoryId != null) return false;
         if (jobLocation != null ? !jobLocation.equals(job.jobLocation) : job.jobLocation != null) return false;
         if (jobCreatedByUserId != null ? !jobCreatedByUserId.equals(job.jobCreatedByUserId) : job.jobCreatedByUserId != null)
             return false;
         if (jobAssignedToUserId != null ? !jobAssignedToUserId.equals(job.jobAssignedToUserId) : job.jobAssignedToUserId != null)
             return false;
         if (jobPricingId != null ? !jobPricingId.equals(job.jobPricingId) : job.jobPricingId != null) return false;
+        if (jobPricingPlanId != null ? !jobPricingPlanId.equals(job.jobPricingPlanId) : job.jobPricingPlanId != null)
+            return false;
         if (jobNotes != null ? !jobNotes.equals(job.jobNotes) : job.jobNotes != null) return false;
         if (jobCreated != null ? !jobCreated.equals(job.jobCreated) : job.jobCreated != null) return false;
         if (jobAssigned != null ? !jobAssigned.equals(job.jobAssigned) : job.jobAssigned != null) return false;
@@ -145,11 +158,12 @@ public class Job {
     @Override
     public int hashCode() {
         int result = jobId != null ? jobId.hashCode() : 0;
-        result = 31 * result + (jobTypeId != null ? jobTypeId.hashCode() : 0);
+        result = 31 * result + (jobCategoryId != null ? jobCategoryId.hashCode() : 0);
         result = 31 * result + (jobLocation != null ? jobLocation.hashCode() : 0);
         result = 31 * result + (jobCreatedByUserId != null ? jobCreatedByUserId.hashCode() : 0);
         result = 31 * result + (jobAssignedToUserId != null ? jobAssignedToUserId.hashCode() : 0);
         result = 31 * result + (jobPricingId != null ? jobPricingId.hashCode() : 0);
+        result = 31 * result + (jobPricingPlanId != null ? jobPricingPlanId.hashCode() : 0);
         result = 31 * result + (jobNotes != null ? jobNotes.hashCode() : 0);
         result = 31 * result + (jobCreated != null ? jobCreated.hashCode() : 0);
         result = 31 * result + (jobAssigned != null ? jobAssigned.hashCode() : 0);

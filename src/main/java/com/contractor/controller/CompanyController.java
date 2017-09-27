@@ -45,7 +45,7 @@ public class CompanyController {
             return ResponseFactory.getInternalError500();
         }
         company.setCompanyId(companyId);
-        return ResponseFactory.getSuccess200(company);
+        return ResponseFactory.getCreated201(company);
     }
 
     public Response getCompany(Integer companyId) {
@@ -62,7 +62,7 @@ public class CompanyController {
         boolean success = COMPANY_DAO.update(company);
 
         if (!success) {
-            return ResponseFactory.getBadRequest400("Couldn't update company", "Make sure all fields are present");
+            return ResponseFactory.getBadRequest400("Couldn't update company! Make sure all fields are present! ");
         }
 
         return ResponseFactory.getSuccess200(company);
@@ -76,7 +76,7 @@ public class CompanyController {
         }
 
         if (COMPANY_DAO.delete(company)) {
-            return ResponseFactory.getSuccess200();
+            return ResponseFactory.getNoContent204();
         }
 
         return ResponseFactory.getInternalError500();

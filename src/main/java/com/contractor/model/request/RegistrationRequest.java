@@ -1,5 +1,7 @@
 package com.contractor.model.request;
 
+import com.contractor.enums.UserRoleProperty;
+
 import javax.validation.constraints.NotNull;
 
 public class RegistrationRequest {
@@ -14,7 +16,7 @@ public class RegistrationRequest {
     @NotNull
     private String phoneNumber;
     @NotNull
-    private String userRole;
+    private UserRoleProperty userRole;
 
 
     public String getEmail() {
@@ -57,11 +59,11 @@ public class RegistrationRequest {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getUserRole() {
+    public UserRoleProperty getUserRole() {
         return userRole;
     }
 
-    public void setUserRole(String userRole) {
+    public void setUserRole(UserRoleProperty userRole) {
         this.userRole = userRole;
     }
 }

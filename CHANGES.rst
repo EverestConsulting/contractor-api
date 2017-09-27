@@ -21,6 +21,10 @@ TODO
 unreleased
 ==========
 
+Job Status Implementation
+
+    - Refactored job status table.
+
 Firebase Notification
 
     - Added firebase notification models and logic.

@@ -9,8 +9,17 @@
             <column name="pricing_id" sql-type="integer"/>
             <generator class="identity"/>
         </id>
-        <property name="price">
-            <column name="price" sql-type="numeric" precision="-1"/>
+        <property name="startingPrice">
+            <column name="starting_price" sql-type="numeric" precision="-1"/>
+        </property>
+        <property name="staringPriceDescription">
+            <column name="staring_price_description" sql-type="text"/>
+        </property>
+        <property name="additionalPrice">
+            <column name="additional_price" sql-type="numeric" precision="-1"/>
+        </property>
+        <property name="additionalPriceDescription">
+            <column name="additional_price_description" sql-type="text"/>
         </property>
         <property name="priceCurrency">
             <column name="price_currency" sql-type="varchar(15)" length="15"/>
@@ -18,11 +27,8 @@
         <property name="priceUnit">
             <column name="price_unit" sql-type="varchar(20)" length="20"/>
         </property>
-        <property name="pricingPlanId">
-            <column name="pricing_plan_id" sql-type="integer"/>
-        </property>
-        <property name="jobTypeId">
-            <column name="job_type_id" sql-type="integer"/>
+        <property name="jobCategoryId">
+            <column name="job_category_id" sql-type="integer"/>
         </property>
     </class>
 </hibernate-mapping>

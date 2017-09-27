@@ -13,27 +13,27 @@
         <property name="connection_pool_size">4</property>
         <!-- Print executed SQL to stdout -->
         <property name="show_sql">true</property>
-        <!-- Annotated entity classes -->
         <mapping class="com.contractor.model.entity.Company"/>
-        <mapping class="com.contractor.model.entity.Job"/>
-        <mapping class="com.contractor.model.entity.JobStatus"/>
-        <mapping class="com.contractor.model.entity.JobType"/>
-        <mapping class="com.contractor.model.entity.NotificationToken"/>
-        <mapping class="com.contractor.model.entity.Pricing"/>
-        <mapping class="com.contractor.model.entity.PricingPlan"/>
-        <mapping class="com.contractor.model.entity.SessionToken"/>
-        <mapping class="com.contractor.model.entity.UserRole"/>
-        <mapping class="com.contractor.model.entity.Users"/>
         <mapping resource="Company.hbm.xml"/>
+        <mapping class="com.contractor.model.entity.Job"/>
         <mapping resource="Job.hbm.xml"/>
-        <mapping resource="JobStatus.hbm.xml"/>
-        <mapping resource="JobType.hbm.xml"/>
+        <mapping class="com.contractor.model.entity.JobCategory"/>
+        <mapping resource="JobCategory.hbm.xml"/>
+        <mapping class="com.contractor.model.entity.NotificationToken"/>
         <mapping resource="NotificationToken.hbm.xml"/>
+        <mapping class="com.contractor.model.entity.Pricing"/>
         <mapping resource="Pricing.hbm.xml"/>
+        <mapping class="com.contractor.model.entity.PricingPlan"/>
         <mapping resource="PricingPlan.hbm.xml"/>
+        <mapping class="com.contractor.model.entity.SessionToken"/>
         <mapping resource="SessionToken.hbm.xml"/>
         <mapping resource="UserRole.hbm.xml"/>
+        <mapping class="com.contractor.model.entity.UserRole"/>
+        <mapping class="com.contractor.model.entity.Users"/>
         <mapping resource="Users.hbm.xml"/>
+        <mapping class="com.contractor.model.entity.JobStatus"/>
+        <mapping resource="JobStatus.hbm.xml"/>
+        <!-- Annotated entity classes -->
 
     </session-factory>
 </hibernate-configuration>

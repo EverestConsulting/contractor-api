@@ -18,6 +18,14 @@ PostgreSQL
 
 Project requires PostgreSQl version 9.x, which You can download from `https://www.postgresql.org/download/`
 
+Wildfly
+-------
+
+- Download Wildfly 10.1.0. Final from `http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.zip`
+- Unpack zip to folder of your choosing.
+- Add `JBOSS_HOME` enviroment variable.
+- Start wildfly with `./JBOSS_HOME/bin/standalone.sh`
+
 Installation instructions
 =========================
 

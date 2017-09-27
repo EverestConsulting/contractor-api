@@ -9,8 +9,17 @@
             <column name="job_status_id" sql-type="integer"/>
             <generator class="identity"/>
         </id>
-        <property name="jobStatusName">
-            <column name="job_status_name" sql-type="varchar(20)" length="20" not-null="true"/>
+        <property name="jobId">
+            <column name="job_id" sql-type="bigint"/>
+        </property>
+        <property name="userId">
+            <column name="user_id" sql-type="integer"/>
+        </property>
+        <property name="jobStatusTitle">
+            <column name="job_status_title" sql-type="varchar(15)" length="15" not-null="true"/>
+        </property>
+        <property name="created">
+            <column name="created" sql-type="timestamp"/>
         </property>
     </class>
 </hibernate-mapping>

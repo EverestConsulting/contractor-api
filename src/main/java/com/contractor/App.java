@@ -21,9 +21,9 @@ public class App {
     private List<UserRole> userRoles;
 
     private CompanyDao companyDao;
+    private JobCategoryDao jobCategoryDao;
     private JobDao jobDao;
     private JobStatusDao jobStatusDao;
-    private JobTypeDao jobTypeDao;
     private NotificationTokenDao notificationTokenDao;
     private PricingDao pricingDao;
     private PricingPlanDao pricingPlanDao;
@@ -35,9 +35,9 @@ public class App {
 
         //instantiate data access singleton classes
         companyDao = new CompanyDao();
+        jobCategoryDao = new JobCategoryDao();
         jobDao = new JobDao();
         jobStatusDao = new JobStatusDao();
-        jobTypeDao = new JobTypeDao();
         notificationTokenDao = new NotificationTokenDao();
         pricingDao = new PricingDao();
         pricingPlanDao = new PricingPlanDao();
@@ -116,8 +116,8 @@ public class App {
         return jobStatusDao;
     }
 
-    public JobTypeDao getJobTypeDao() {
-        return jobTypeDao;
+    public JobCategoryDao getJobCategoryDao() {
+        return jobCategoryDao;
     }
 
     public NotificationTokenDao getNotificationTokenDao() {

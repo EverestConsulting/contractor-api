@@ -57,7 +57,7 @@ public class SessionController {
 
         //if we couldn't find user, return not found response
         if (!userValid) {
-            return ResponseFactory.getNotFound404("Couldn't find user", "Email or password not correct!");
+            return ResponseFactory.getNotFound404("Couldn't find user, email or password not correct!");
         }
 
         //otherwise create token and return it to user
@@ -85,7 +85,7 @@ public class SessionController {
             SESSION_TOKEN_DAO.delete(sessionToken);
         }
 
-        return ResponseFactory.getSuccess200();
+        return ResponseFactory.getNoContent204();
     }
 
 }

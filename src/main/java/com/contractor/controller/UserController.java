@@ -52,7 +52,7 @@ public class UserController {
         }
 
         if (null == userRoleId) {
-            return ResponseFactory.getBadRequest400("Bad Request", "Missing mandatory userRole");
+            return ResponseFactory.getBadRequest400("Bad Request, missing mandatory userRole");
         }
 
         Users user = new Users();
@@ -70,7 +70,7 @@ public class UserController {
         }
 
         user.setUserId(userId);
-        return ResponseFactory.getSuccess200(user);
+        return ResponseFactory.getCreated201(user);
     }
 
     public Response fetchUser(Integer userId) {
@@ -87,7 +87,7 @@ public class UserController {
         boolean success = USER_DAO.update(user);
 
         if (!success) {
-            return ResponseFactory.getBadRequest400("Couldn't update user", "Make sure all fields are present");
+            return ResponseFactory.getBadRequest400("Couldn't update user, make sure all fields are present");
         }
 
         return ResponseFactory.getSuccess200(user);
@@ -102,7 +102,7 @@ public class UserController {
 
 
         if (USER_DAO.delete(user)) {
-            return ResponseFactory.getSuccess200();
+            return ResponseFactory.getNoContent204();
         }
 
         return ResponseFactory.getInternalError500();

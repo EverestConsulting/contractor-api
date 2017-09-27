@@ -22,8 +22,7 @@ import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
 /**
- * Handles the RESTFull API interface
- * All CRUD entry points are handled here.
+ * Basic access points.
  */
 @Path("v1")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -62,21 +61,13 @@ public class ApiResources {
     @GET
     @Path("/category")
     public Response getCategories() {
-        List<JobType> jobTypeList = App.instance().getJobTypeDao().findAll();
+        List<JobCategory> jobTypeList = App.instance().getJobCategoryDao().findAll();
 
         return null == jobTypeList ?
                 ResponseFactory.getNotImplemented501()
                 : ResponseFactory.getSuccess200(jobTypeList);
     }
 
-    @GET
-    @Path("/job-status")
-    public Response getJobStatus(@Context SecurityContext securityContext) {
-        List<JobStatus> jobStatusList = App.instance().getJobStatusDao().findAll();
-        return null == jobStatusList ?
-                ResponseFactory.getNotImplemented501()
-                : ResponseFactory.getSuccess200(jobStatusList);
-    }
 
     @GET
     @Path("/pricing-plan")

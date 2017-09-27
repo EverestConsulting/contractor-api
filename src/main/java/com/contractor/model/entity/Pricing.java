@@ -9,11 +9,13 @@ import java.math.BigInteger;
 @Entity
 public class Pricing {
     private Integer pricingId;
-    private BigInteger price;
+    private BigInteger startingPrice;
+    private String staringPriceDescription;
+    private BigInteger additionalPrice;
+    private String additionalPriceDescription;
     private String priceCurrency;
     private String priceUnit;
-    private Integer pricingPlanId;
-    private Integer jobTypeId;
+    private Integer jobCategoryId;
 
     @Id
     @Column(name = "pricing_id", nullable = false)
@@ -26,13 +28,43 @@ public class Pricing {
     }
 
     @Basic
-    @Column(name = "price", nullable = false, precision = 0)
-    public BigInteger getPrice() {
-        return price;
+    @Column(name = "starting_price", nullable = false, precision = 0)
+    public BigInteger getStartingPrice() {
+        return startingPrice;
     }
 
-    public void setPrice(BigInteger price) {
-        this.price = price;
+    public void setStartingPrice(BigInteger startingPrice) {
+        this.startingPrice = startingPrice;
+    }
+
+    @Basic
+    @Column(name = "staring_price_description", nullable = false, length = -1)
+    public String getStaringPriceDescription() {
+        return staringPriceDescription;
+    }
+
+    public void setStaringPriceDescription(String staringPriceDescription) {
+        this.staringPriceDescription = staringPriceDescription;
+    }
+
+    @Basic
+    @Column(name = "additional_price", nullable = false, precision = 0)
+    public BigInteger getAdditionalPrice() {
+        return additionalPrice;
+    }
+
+    public void setAdditionalPrice(BigInteger additionalPrice) {
+        this.additionalPrice = additionalPrice;
+    }
+
+    @Basic
+    @Column(name = "additional_price_description", nullable = false, length = -1)
+    public String getAdditionalPriceDescription() {
+        return additionalPriceDescription;
+    }
+
+    public void setAdditionalPriceDescription(String additionalPriceDescription) {
+        this.additionalPriceDescription = additionalPriceDescription;
     }
 
     @Basic
@@ -56,23 +88,13 @@ public class Pricing {
     }
 
     @Basic
-    @Column(name = "pricing_plan_id", nullable = false)
-    public Integer getPricingPlanId() {
-        return pricingPlanId;
+    @Column(name = "job_category_id", nullable = false)
+    public Integer getJobCategoryId() {
+        return jobCategoryId;
     }
 
-    public void setPricingPlanId(Integer pricingPlanId) {
-        this.pricingPlanId = pricingPlanId;
-    }
-
-    @Basic
-    @Column(name = "job_type_id", nullable = false)
-    public Integer getJobTypeId() {
-        return jobTypeId;
-    }
-
-    public void setJobTypeId(Integer jobTypeId) {
-        this.jobTypeId = jobTypeId;
+    public void setJobCategoryId(Integer jobCategoryId) {
+        this.jobCategoryId = jobCategoryId;
     }
 
     @Override
@@ -83,13 +105,19 @@ public class Pricing {
         Pricing pricing = (Pricing) o;
 
         if (pricingId != null ? !pricingId.equals(pricing.pricingId) : pricing.pricingId != null) return false;
-        if (price != null ? !price.equals(pricing.price) : pricing.price != null) return false;
+        if (startingPrice != null ? !startingPrice.equals(pricing.startingPrice) : pricing.startingPrice != null)
+            return false;
+        if (staringPriceDescription != null ? !staringPriceDescription.equals(pricing.staringPriceDescription) : pricing.staringPriceDescription != null)
+            return false;
+        if (additionalPrice != null ? !additionalPrice.equals(pricing.additionalPrice) : pricing.additionalPrice != null)
+            return false;
+        if (additionalPriceDescription != null ? !additionalPriceDescription.equals(pricing.additionalPriceDescription) : pricing.additionalPriceDescription != null)
+            return false;
         if (priceCurrency != null ? !priceCurrency.equals(pricing.priceCurrency) : pricing.priceCurrency != null)
             return false;
         if (priceUnit != null ? !priceUnit.equals(pricing.priceUnit) : pricing.priceUnit != null) return false;
-        if (pricingPlanId != null ? !pricingPlanId.equals(pricing.pricingPlanId) : pricing.pricingPlanId != null)
+        if (jobCategoryId != null ? !jobCategoryId.equals(pricing.jobCategoryId) : pricing.jobCategoryId != null)
             return false;
-        if (jobTypeId != null ? !jobTypeId.equals(pricing.jobTypeId) : pricing.jobTypeId != null) return false;
 
         return true;
     }
@@ -97,11 +125,13 @@ public class Pricing {
     @Override
     public int hashCode() {
         int result = pricingId != null ? pricingId.hashCode() : 0;
-        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (startingPrice != null ? startingPrice.hashCode() : 0);
+        result = 31 * result + (staringPriceDescription != null ? staringPriceDescription.hashCode() : 0);
+        result = 31 * result + (additionalPrice != null ? additionalPrice.hashCode() : 0);
+        result = 31 * result + (additionalPriceDescription != null ? additionalPriceDescription.hashCode() : 0);
         result = 31 * result + (priceCurrency != null ? priceCurrency.hashCode() : 0);
         result = 31 * result + (priceUnit != null ? priceUnit.hashCode() : 0);
-        result = 31 * result + (pricingPlanId != null ? pricingPlanId.hashCode() : 0);
-        result = 31 * result + (jobTypeId != null ? jobTypeId.hashCode() : 0);
+        result = 31 * result + (jobCategoryId != null ? jobCategoryId.hashCode() : 0);
         return result;
     }
 }

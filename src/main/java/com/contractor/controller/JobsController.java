@@ -44,12 +44,12 @@ public class JobsController {
         Integer id = JOB_DAO.create(job);
 
         if (null == id) {
-            return ResponseFactory.getBadRequest400("Couldn't update user", "Make sure all fields are present");
+            return ResponseFactory.getBadRequest400("Couldn't update user, make sure all fields are present");
         }
 
         job.setJobId(Long.valueOf(String.valueOf(id)));
 
-        return ResponseFactory.getSuccess200(job);
+        return ResponseFactory.getCreated201(job);
     }
 
     public Response fetchJob(Integer jobId) {
@@ -79,7 +79,7 @@ public class JobsController {
         }
 
         if (JOB_DAO.delete(job)) {
-            return ResponseFactory.getSuccess200();
+            return ResponseFactory.getNoContent204();
         }
 
         return ResponseFactory.getInternalError500();

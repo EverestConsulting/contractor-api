@@ -31,7 +31,7 @@ public class PricingPlan {
     }
 
     @Basic
-    @Column(name = "pricing_plan_description", nullable = false, length = 255)
+    @Column(name = "pricing_plan_description", nullable = false, length = -1)
     public String getPricingPlanDescription() {
         return pricingPlanDescription;
     }
