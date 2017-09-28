@@ -7,11 +7,7 @@
     <class name="com.contractor.model.entity.Users" table="users" schema="public" catalog="contractor">
         <id name="userId">
             <column name="user_id" sql-type="integer"/>
-            <generator class="identity"/>
         </id>
-        <property name="userName">
-            <column name="user_name" sql-type="varchar(255)"/>
-        </property>
         <property name="firstName">
             <column name="first_name" sql-type="varchar(255)"/>
         </property>
@@ -22,16 +18,16 @@
             <column name="password" sql-type="varchar(255)"/>
         </property>
         <property name="streetName">
-            <column name="street_name" sql-type="varchar(255)"/>
+            <column name="street_name" sql-type="varchar(255)" not-null="true"/>
         </property>
         <property name="streetNumber">
-            <column name="street_number" sql-type="varchar(10)" length="10"/>
+            <column name="street_number" sql-type="varchar(10)" length="10" not-null="true"/>
         </property>
         <property name="country">
-            <column name="country" sql-type="varchar(255)"/>
+            <column name="country" sql-type="varchar(255)" not-null="true"/>
         </property>
         <property name="zipCode">
-            <column name="zip_code" sql-type="integer"/>
+            <column name="zip_code" sql-type="integer" not-null="true"/>
         </property>
         <property name="email">
             <column name="email" sql-type="varchar(255)"/>

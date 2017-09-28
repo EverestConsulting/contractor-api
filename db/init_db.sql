@@ -53,14 +53,13 @@ CREATE TABLE company (
 
 CREATE TABLE users (
   user_id            SERIAL,
-  user_name          CHARACTER VARYING(255) NOT NULL,
   first_name         CHARACTER VARYING(255) NOT NULL,
   last_name          CHARACTER VARYING(255) NOT NULL,
   password           CHARACTER VARYING(255) NOT NULL,
-  street_name        CHARACTER VARYING(255) NOT NULL,
-  street_number      CHARACTER VARYING(10)  NOT NULL,
-  country            CHARACTER VARYING(255) NOT NULL,
-  zip_code           INTEGER                NOT NULL,
+  street_name        CHARACTER VARYING(255),
+  street_number      CHARACTER VARYING(10),
+  country            CHARACTER VARYING(255),
+  zip_code           INTEGER,
   email              CHARACTER VARYING(255) NOT NULL  UNIQUE,
   email_subscription BOOLEAN                NOT NULL DEFAULT FALSE,
   user_role_id       INTEGER                NOT NULL,
@@ -224,9 +223,8 @@ INSERT INTO pricing (starting_price, staring_price_description, additional_price
   FROM (SELECT a.job_category_id
         FROM job_category AS a) AS b;
 
-INSERT INTO users (user_name, first_name, last_name, password, street_name, street_number, country, zip_code, email, user_role_id, phone_number, created, last_modified)
+INSERT INTO users (first_name, last_name, password, street_name, street_number, country, zip_code, email, user_role_id, phone_number, created, last_modified)
   SELECT
-    'everest',
     'Everest',
     'Consulting',
     '$2a$04$At.7B49IFotG0mzWtwSb6.ZXLF7l9fyDiDyO4USrTQy9tdaV55esy',

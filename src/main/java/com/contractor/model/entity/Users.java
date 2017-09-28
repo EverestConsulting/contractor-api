@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 @Entity
 public class Users {
     private Integer userId;
-    private String userName;
     private String firstName;
     private String lastName;
     private String password;
@@ -34,16 +33,6 @@ public class Users {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    @Basic
-    @Column(name = "user_name", nullable = false, length = 255)
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     @Basic
@@ -77,7 +66,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "street_name", nullable = false, length = 255)
+    @Column(name = "street_name", nullable = true, length = 255)
     public String getStreetName() {
         return streetName;
     }
@@ -87,7 +76,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "street_number", nullable = false, length = 10)
+    @Column(name = "street_number", nullable = true, length = 10)
     public String getStreetNumber() {
         return streetNumber;
     }
@@ -97,7 +86,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "country", nullable = false, length = 255)
+    @Column(name = "country", nullable = true, length = 255)
     public String getCountry() {
         return country;
     }
@@ -107,7 +96,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "zip_code", nullable = false)
+    @Column(name = "zip_code", nullable = true)
     public Integer getZipCode() {
         return zipCode;
     }
@@ -204,7 +193,6 @@ public class Users {
         Users users = (Users) o;
 
         if (userId != null ? !userId.equals(users.userId) : users.userId != null) return false;
-        if (userName != null ? !userName.equals(users.userName) : users.userName != null) return false;
         if (firstName != null ? !firstName.equals(users.firstName) : users.firstName != null) return false;
         if (lastName != null ? !lastName.equals(users.lastName) : users.lastName != null) return false;
         if (password != null ? !password.equals(users.password) : users.password != null) return false;
@@ -228,7 +216,6 @@ public class Users {
     @Override
     public int hashCode() {
         int result = userId != null ? userId.hashCode() : 0;
-        result = 31 * result + (userName != null ? userName.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);

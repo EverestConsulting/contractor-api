@@ -2,14 +2,17 @@ package com.contractor.controller;
 
 import com.contractor.App;
 import com.contractor.api.ResponseFactory;
+import com.contractor.enums.UserRoleProperty;
 import com.contractor.model.dao.UserDao;
 import com.contractor.model.entity.UserRole;
 import com.contractor.model.entity.Users;
 import com.contractor.model.request.RegistrationRequest;
+import com.contractor.util.Crypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
+import java.sql.Timestamp;
 
 /**
  * Singleton class which handles business logic for handling user operations.
@@ -46,7 +49,7 @@ public class UserController {
         Integer userRoleId = null;
 
         for (UserRole userRole : App.instance().getUserRoles()) {
-            if (userRole.getUserRoleName().equalsIgnoreCase(request.getUserRole())) {
+            if (userRole.getUserRoleName().equalsIgnoreCase(request.getUserRole().name())) {
                 userRoleId = userRole.getUserRoleId();
             }
         }
@@ -57,11 +60,18 @@ public class UserController {
 
         Users user = new Users();
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(Crypt.hashIt(request.getPassword()));
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setUserId(userRoleId);
+        user.setCreated(new Timestamp(System.currentTimeMillis()));
+        user.setLastModified(new Timestamp(System.currentTimeMillis()));
+        user.setEmailSubscription(true);
+        user.setUserRoleId(userRoleId);
+
+        boolean active = !request.getUserRole().equals(UserRoleProperty.contractor);
+        user.setActive(active);
 
         Integer userId = USER_DAO.create(user);
 
